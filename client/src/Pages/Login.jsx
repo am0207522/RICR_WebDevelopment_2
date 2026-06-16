@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import deliveryboy from "../assets/deliberyboy.png";
+import deliveryboy from "../assets/deliveryboy.png";
 
 const Login = () => {
   const [loginData, setLoginData] = useState({
@@ -33,7 +33,7 @@ const Login = () => {
     <>
       <div className="h-[90vh] bg-linear-to-r from-(--secondary) to-(--primary) grid grid-cols-2 p-10 ">
         <div className="hidden md:block">
-          <img src={deliveryboy} alt="" className="rotate-y-180" />
+          <img src={deliveryboy} alt="" className="rotate-y-180 height-50vh" />
         </div>
         <div className="w-md bg-(--background) rounded shadow p-10 flex flex-col justify-center">
           <div>Welocome Back!</div>
