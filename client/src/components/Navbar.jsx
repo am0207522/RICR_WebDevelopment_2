@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const Navbar = () => {
   return (
     <>
-      <div className="bg-(--secondary) text-(--primary)">
+      <div className="bg-(--error) text-(--primary-text) p-3 flex justify-between">
         <div>
           Cravings
         </div>
