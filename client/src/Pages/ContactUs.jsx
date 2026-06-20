@@ -55,7 +55,7 @@ const Contactus = () => {
 
           <button
             type="submit"
-            className="w-full bg-blue-900 text-white py-3 rounded-lg hover:bg-blue-800 transition-colors"
+            className="w-full bg-[#c0392b] text-white py-3 rounded-lg hover:bg-blue-800 transition-colors"
           >
             Send Message
           </button>
