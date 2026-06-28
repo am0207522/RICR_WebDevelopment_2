@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import api from "../config/api.config.js";
 
 const Register = () => {
   const [registerData, setRegisterData] = useState({
@@ -17,7 +18,8 @@ const Register = () => {
   // Teacher's pattern: single handleChange for all inputs
   const handleChange = (e) => {
     const name = e.target.name;
-    const value = e.target.type === "checkbox" ? e.target.checked : e.target.value;
+    const value =
+      e.target.type === "checkbox" ? e.target.checked : e.target.value;
 
     setRegisterData((prevData) => ({ ...prevData, [name]: value }));
   };
@@ -43,9 +45,7 @@ const Register = () => {
   };
 
   return (
-    <div
-      className="h-[90vh] bg-[url('public/foodTable.webp')] flex items-center justify-end bg-cover bg-center p-10 md:pe-30"
-    >
+    <div className="h-[90vh] bg-[url('public/foodTable.webp')] flex items-center justify-end bg-cover bg-center p-10 md:pe-30">
       <div className="bg-white rounded-xl shadow-md px-10 py-6 max-w-md w-full">
         <h2 className="text-center text-3xl font-bold text-[#c0392b] mb-2">
           Create Account
@@ -56,7 +56,6 @@ const Register = () => {
 
         {/* Teacher's pattern: onSubmit on the form tag */}
         <form onSubmit={handleSubmit}>
-
           {/* Role Radio Buttons — using handleChange with name="role" */}
           <div className="mb-4">
             <span className="block mb-2 font-medium text-gray-700">
@@ -73,7 +72,7 @@ const Register = () => {
                     name="role"
                     value={r}
                     checked={registerData.role === r}
-                    onChange={handleChange}   // ✅ Teacher's pattern
+                    onChange={handleChange} // ✅ Teacher's pattern
                     className="accent-[#c0392b]"
                   />
                   {r.charAt(0).toUpperCase() + r.slice(1)}
@@ -85,10 +84,10 @@ const Register = () => {
           <div className="flex flex-col gap-3 mb-4">
             <input
               type="text"
-              name="name"                         // ✅ name attr for handleChange
+              name="name" // ✅ name attr for handleChange
               placeholder="Enter your full name"
-              value={registerData.name}           // ✅ controlled input
-              onChange={handleChange}             // ✅ Teacher's pattern
+              value={registerData.name} // ✅ controlled input
+              onChange={handleChange} // ✅ Teacher's pattern
               required
               className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-[#c0392b]"
             />
@@ -130,36 +129,25 @@ const Register = () => {
             />
           </div>
 
-          {/* Checkbox — handleChange uses e.target.checked automatically */}
-          <div className="mb-4 flex items-center gap-2">
-            <input
-              type="checkbox"
-              name="agreeTerms"
-              checked={registerData.agreeTerms}
-              onChange={handleChange}
-              className="accent-[#c0392b]"
-            />
-            <span className="text-gray-700 text-sm">
-              I agree to the terms and conditions.
-            </span>
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-[#c0392b] text-white py-2 rounded font-semibold hover:bg-[#a93226] transition-colors"
-          >
-            Register
-          </button>
-
-          <div className="flex justify-center gap-1 mt-3 text-sm">
-            <p className="mb-0 text-gray-600">Already registered?</p>
-            <Link
-              to="/login"
-              className="text-[#c0392b] font-semibold"
-              style={{ textDecoration: "none" }}
-            >
-              Login here
-            </Link>
+          <div className="mt-6 text-center space-y-2">
+            <p className="text-sm">
+              Don't have an account?{" "}
+              <button
+                onClick={() => navigate("/register")}
+                className="text-[#c0392b] hover:underline font-semibold"
+              >
+                Register here
+              </button>
+            </p>
+            <p className="text-sm">
+              Having Trouble?{" "}
+              <button
+                onClick={() => navigate("/contact-us")}
+                className="text-[#c0392b] hover:underline font-semibold"
+              >
+                Contact Us
+              </button>
+            </p>
           </div>
         </form>
       </div>
@@ -168,3 +156,4 @@ const Register = () => {
 };
 
 export default Register;
+
