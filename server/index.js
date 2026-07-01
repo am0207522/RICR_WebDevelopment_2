@@ -3,34 +3,36 @@ dotenv.config();
 
 import express from "express";
 import connectDB from "./src/config/dbConnection.config.js";
-import AuthRouter from "./src/router/auth.route.js";      // ✅ NEW - auth routes
-import PublicRouter from "./src/router/public.route.js";  // ✅ NEW - public routes
-import morgan from "morgan";                               // ✅ NEW - request logger
-import cors from "cors";                                   // ✅ NEW - cors
+import AuthRouter from "./src/router/auth.route.js";             // - auth routes
+import PublicRouter from "./src/router/public.route.js";       // - public routes
+import ContactRouter from "./src/router/contact.route.js";    // - contact routes
+import morgan from "morgan";                                 // - request logger
+import cors from "cors";                                   // - cors
 
 const app = express();
 
-app.use(cors({ origin: "http://localhost:5173" }));  // ✅ NEW - frontend allow karo
-app.use(express.json());
-app.use(morgan("dev"));                              // ✅ NEW - terminal mein requests dikhega
+app.use(cors({ origin: "http://localhost:5173" }));  // - frontend allow karo
+app.use(express.json());                             // - JSON body parser
+app.use(morgan("dev"));                              // - terminal mein requests dikhega
 
-app.use("/auth", AuthRouter);    // ✅ NEW
-app.use("/public", PublicRouter); // ✅ NEW
+app.use("/auth", AuthRouter);    // - auth routes
+app.use("/public", PublicRouter); // - public routes
+app.use("/contact", ContactRouter); // - contact routes
 
-app.get("/", (req, res) => {
-  console.log("Default Get API Hit");
+app.get("/", (req, res) => {   // - default route
+  console.log("Default Get API Hit");  
   res.json({ message: "Welcome to my Cravings Project" });
 });
 
-app.use((err, req, res, next) => {
+app.use((err, req, res, next) => {  // - error handling middleware
   const ErrMessage = err.message || "Internal Server Error";
   const ErrStausCode = err.statusCode || 500;
   res.status(ErrStausCode).json({ message: ErrMessage });
 });
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5000;  // - port
 
-app.listen(port, () => {
+app.listen(port, () => {             // - server listen
   console.log("Server Started on port:", port);
   connectDB();
 });
