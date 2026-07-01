@@ -18,16 +18,20 @@ export const RegisterUser = async (req, res, next) => {
       return next(error);
     }
 
-    // ✅ Sir ka - photo ek simple string hai (object nahi)
+    // photo ek simple string hai (object nahi)
     const photo = `https://placehold.co/600x400?text=${fullName.charAt(0).toUpperCase()}`;
 
     const SALT = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, SALT);
 
-    await User.create({
-      fullName, email,
+    const newUser = await User.create({
+      fullName,
+      email,
       password: hashedPassword,
-      phone, gender, dob, photo,
+      phone,
+      gender, 
+      dob, 
+      photo,
     });
 
     res.status(201).json({ message: "User Created Successfully" });
