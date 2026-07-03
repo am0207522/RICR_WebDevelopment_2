@@ -16,11 +16,20 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="bg-[#c0392b] text-lg text-white p-3 flex justify-between items-center">
-        <div>Cravings</div>
+      <div className="sticky top-0 z-[999] bg-[#c0392b] text-lg text-white p-5 flex justify-between items-center">
+        {/* cravings_Logo  */}
+        <div className="ms-1">
+          <Link to="/">
+            <img
+              src="/logo.png"
+              alt="Logo"
+              className="h-10 w-auto object-contain"
+            />
+          </Link>
+        </div>
 
         <div className="flex gap-4 items-center">
-          <Link to={"/dashboard"} className="hover:underline">
+          <Link to={"/"} className="hover:underline">
             Home
           </Link>
           <Link to={"/contact-us"} className="hover:underline">

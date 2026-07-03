@@ -6,7 +6,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ContactUs from "./pages/ContactUs";
 import Navbar from "./components/Navbar";
-import UserDashboard from "./pages/dashboard/userDashboard";
+import UserDashboard from "./pages/dashboard/UserDashboard";
 
 const App = () => {
   return (
@@ -19,9 +19,10 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/contact-us" element={<ContactUs />} />
+        <Route path="/" element={<Home />} />
 
         {/* dashborad routes */}
-        <Route path="/dashboard" element={<UserDashboard />} />
+        <Route path="/userdashboard" element={<UserDashboard />} />
       </Routes>
     </BrowserRouter>
     </>
