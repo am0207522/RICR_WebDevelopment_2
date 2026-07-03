@@ -45,7 +45,7 @@ const Login = () => {
       sessionStorage.setItem("UserData", JSON.stringify(res.data.data));
       setUser(res.data.data);
       setIsLogin(true);
-      navigate("/dashboard");
+      navigate("/userdashboard")
     } catch (error) {
       toast.error(error.response.status + " | " + error.response?.data?.message ||
       error.message);
