@@ -13,14 +13,20 @@ const MenuItems = [
 const Sidebar = ({ active, setActive }) => {
   return (
     <>
-      <div className="p-3">
-        <div className="border-b-2 text-center text-xl">User Dashboard</div>
+      <div className="p-3 bg-white rounded-2xl shadow-lg">
+        <div className="border-b-2 border-[#e7d9c9] text-center text-xl font-bold text-[#2d1b10] pb-3">
+          User Dashboard
+        </div>
 
-        <div className="space-y-1 p-4 mt-4">
+        <div className="space-y-1 p-4 mt-2">
           {MenuItems.map((item, idx) => (
             <button
               key={idx}
-              className={`flex gap-3 font-semibold items-center border border-transparent hover:border-(--primary) w-full p-3 rounded-lg ${active===item.name && "bg-(--secondary) text-(--primary-text)"}`}
+              className={`flex gap-3 font-semibold items-center border border-transparent hover:border-[#c2410c] transition w-full p-3 rounded-lg ${
+                active === item.name
+                  ? "bg-[#c2410c] text-white"
+                  : "text-[#2d1b10] hover:bg-[#fff8f1]"
+              }`}
               onClick={() => setActive(item.name)}
             >
               {item.icon}
