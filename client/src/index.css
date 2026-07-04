@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 :root {
+  /* -- OLD THEME VARIABLES -- */
   --primary: #0018B7;
   --primary-text: #dfdFF8;
   --secondary: #0046FF;
@@ -10,4 +11,31 @@
   --warning: #F59E0B;
   --background: #F5F1DC;
   --text: #111827;
+  --main: #c0392b;
+
+  /* -- NEW THEME VARIABLES -- */
+  --color-primary: #c2410c;
+  --color-primary-content: #fff; /* Updated New */
+  --color-secondary: #6b7280;
+  --color-secondary-content: #fff;
+  --color-accent: #d9468f;
+  --color-accent-content: #fff;
+  --color-neutral: #3f3f46;
+  --color-neutral-content: #f4f4f5;
+  --color-base-100: #fff8f1;
+  --color-base-200: #f5ede5;
+  --color-base-300: #e7d9c9;
+  --color-base-content: #2d1b10;
+  --color-info: #0ea5e9;
+  --color-info-content: #fff;
+  --color-success: #22c55e;
+  --color-success-content: #fff;
+  --color-warning: #f59e0b;
+  --color-warning-content: #2d1b10;
+  --color-error: #ef4444;
+  --color-error-content: #fff;
 }
+
+/* button {
+  cursor:pointer;      "FOR UNIVERSAL HANDSIGN ON BUTTON INSTEAD OF CURSOR"
+} */
