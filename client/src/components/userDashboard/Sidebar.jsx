@@ -13,8 +13,8 @@ const MenuItems = [
 const Sidebar = ({ active, setActive }) => {
   return (
     <>
-      <div className="p-3 bg-white rounded-2xl shadow-lg">
-        <div className="border-b-2 border-[#e7d9c9] text-center text-xl font-bold text-[#2d1b10] pb-3">
+      <div className="p-3 bg-white rounded-2xl shadow-lg pb-0.5rem !important">
+        <div className="border-b-2 border-[#e7d9c9] text-center text-xl font-bold text-[#2d1b10] pb-3 pt-3">
           User Dashboard
         </div>
 

@@ -27,23 +27,31 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="sticky top-0 z-[999] bg-[#c0392b] text-lg text-white p-5 flex justify-between items-center">
+      <div className="sticky top-0 z-99 flex items-center justify-between px-12 py-1 bg-(--main) text-white w-full h-16 shadow-md">
         {/* cravings_Logo  */}
-        <div className="ms-1">
+        {/* class="w-fit h-full" */}
+        <div className="h-full">
           <Link to="/">
             <img
               src="/logo.png"
               alt="Logo"
-              className="h-10 w-auto object-contain"
+              className="w-fit h-full"
             />
           </Link>
         </div>
 
-        <div className="flex gap-4 items-center">
-          <Link to={"/"} className="hover:underline">
+        <div className="flex gap-2 items-center">
+          <Link
+           to={"/"} 
+           className="text-(--color-primary-content) border border-transparent hover:border-(--color-primary-content) px-3 py-1 rounded"
+           
+          >
             Home
           </Link>
-          <Link to={"/contact-us"} className="hover:underline">
+          <Link
+           to={"/contact-us"} 
+           className="text-(--color-primary-content) border border-transparent hover:border-(--color-primary-content) px-3 py-1 rounded"
+          >
             Contact us
           </Link>
           {isLogin ? (
@@ -56,7 +64,7 @@ const Navbar = () => {
                 />
               </div>
               <Link
-                to={"/dashboard"}
+                to={"/userDashboard"}
                 className="hover:underline hover:text-(--accent)"
               >
                 {user.fullName}
@@ -72,11 +80,14 @@ const Navbar = () => {
             <>
               <Link
                 to={"/login"}
-                className="hover:underline hover:text-(--accent)"
+                className="text-(--color-primary-content) border border-transparent hover:border-(--color-primary-content) px-3 py-1 rounded"
               >
                 Login
               </Link>
-              <Link to={"/register"} className="hover:underline">
+              <Link
+                to={"/register"} className="hover:underline"
+                className="bg-(--color-primary-content) text-(--main) hover:bg-transparent hover:text-(--color-primary-content) border px-3 py-1 rounded"
+              >
                 Register
               </Link>
             </>
