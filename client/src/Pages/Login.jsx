@@ -54,7 +54,7 @@ const Login = () => {
 
   return (
     <div
-      className="h-[90vh] bg-[url('/foodTable.webp')] flex items-center justify-end bg-cover bg-center p-10 md:pe-30"
+      className="h-[90vh] bg-[url('/foodTable.webp')] flex items-center justify-start bg-cover bg-center p-10 md:pe-30"
     >
 <div className="bg-white rounded-xl shadow-md px-10 py-8 max-w-md w-full min-h-[510px] flex flex-col pt-19">        
   <h2 className="text-center text-3xl font-bold text-[#c0392b] mb-2">
@@ -136,3 +136,98 @@ const Login = () => {
 };
 
 export default Login;
+
+
+
+
+
+
+
+
+    // <div
+    //   className="h-[90vh] bg-[url('/foodTable.webp')] flex items-center justify-start bg-cover bg-center p-10 md:ps-30"
+    // >
+    //   <div className="bg-white rounded-xl shadow-md px-10 py-8 max-w-md w-full flex flex-col">
+    //     <h2 className="text-center text-3xl font-bold text-[#c0392b] mb-2">
+    //       Welcome Back
+    //     </h2>
+
+    //     <p className="text-center text-gray-600 mb-6">
+    //       Login to continue your food journey
+    //     </p>
+
+    //     <form onSubmit={handleSubmit}>
+    //       <div className="flex flex-col gap-5 mb-6">
+    //         <div>
+    //           <label className="block text-sm font-semibold mb-1">Email</label>
+    //           <input
+    //             type="email"
+    //             name="email"
+    //             placeholder="Enter your email"
+    //             value={loginData.email}
+    //             onChange={handleChange}
+    //             required
+    //             className="w-full border border-gray-300 rounded px-3 py-3 focus:outline-none focus:border-[#c0392b]"
+    //           />
+    //         </div>
+
+    //         <div>
+    //           <label className="block text-sm font-semibold mb-1">Password</label>
+    //           <input
+    //             type="password"
+    //             name="password"
+    //             placeholder="Enter your password"
+    //             value={loginData.password}
+    //             onChange={handleChange}
+    //             required
+    //             className="w-full border border-gray-300 rounded px-3 py-3 focus:outline-none focus:border-[#c0392b]"
+    //           />
+    //         </div>
+    //       </div>
+
+    //       {validateError && (
+    //         <p className="text-red-500 text-sm mb-3">
+    //           {validateError}
+    //         </p>
+    //       )}
+
+    //       <button
+    //         type="submit"
+    //         className="w-full bg-[#c0392b] text-white py-3 mb-4 rounded font-semibold hover:bg-[#a93226] transition-colors"
+    //       >
+    //         Login
+    //       </button>
+
+    //       <hr className="border-gray-300 mb-4" />
+
+    //       <div className="flex justify-center gap-1 text-sm">
+    //         <p className="mb-0 text-gray-600">
+    //           Don't have an account?
+    //         </p>
+
+    //         <button
+    //           type="button"
+    //           onClick={() => navigate("/register")}
+    //           className="text-[#c0392b] font-semibold"
+    //           style={{ textDecoration: "none" }}
+    //         >
+    //           Register here
+    //         </button>
+    //       </div>
+
+    //       <div className="flex justify-center gap-1 mt-2 text-sm">
+    //         <p className="mb-0 text-gray-600">
+    //           Having Trouble?
+    //         </p>
+
+    //         <button
+    //           type="button"
+    //           onClick={() => navigate("/contact-us")}
+    //           className="text-[#c0392b] font-semibold"
+    //         >
+    //           Contact Us
+    //         </button>
+    //       </div>
+    //     </form>
+    //   </div>
+    // </div>

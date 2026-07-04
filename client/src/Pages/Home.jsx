@@ -59,7 +59,7 @@ const Home = () => {
       {/* </header> */}
 
       {/* Carousel */}
-      <div className="relative w-full h-screen overflow-hidden">
+      <div className="relative w-full h-150 overflow-hidden">
         {slides.map((slide, index) => (
           <div
             key={index}
@@ -147,17 +147,17 @@ const Home = () => {
       <section className="py-4 bg-gradient-to-b from-[#c2410c] to-white">
         <div className="container mx-auto px-3">
           <div className="text-center md:text-left mx-5 p-4">
-            <h2 className="text-white text-2xl mb-2">Featured Restaurants</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-(--color-primary-content) mb-2">Featured Restaurants</h2>
             <p className="text-white/75">3 restaurants available</p>
           </div>
-
+          
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mx-5">
             {/* Card 1 */}
             <div className="bg-white rounded-2xl shadow-lg relative overflow-hidden flex flex-col hover:scale-[1.03] transition-transform duration-200">
               <img
                 src="/topViewRestr.avif"
                 alt="Under The Mango Tree"
-                className="w-full h-44 object-cover"
+                className="w-full h-full object-cover"
               />
               <span className="absolute top-2 right-2 bg-[#c2410c] text-white text-sm font-bold rounded-full px-3 py-1 flex items-center gap-1">
                 <Star size={14} fill="currentColor" /> 3.6
@@ -198,7 +198,7 @@ const Home = () => {
               <img
                 src="/restraimg.webp"
                 alt="Raj Darbar"
-                className="w-full h-44 object-cover"
+                className="w-full h-full object-cover"
               />
               <span className="absolute top-2 right-2 bg-[#c2410c] text-white text-sm font-bold rounded-full px-3 py-1 flex items-center gap-1">
                 <Star size={14} fill="currentColor" /> 4.8
@@ -236,7 +236,7 @@ const Home = () => {
               <img
                 src="/seatingplaceImg.webp"
                 alt="Countryside Culture"
-                className="w-full h-44 object-cover"
+                className="w-full h-full object-cover"
               />
               <span className="absolute top-2 right-2 bg-[#c2410c] text-white text-sm font-bold rounded-full px-3 py-1 flex items-center gap-1">
                 <Star size={14} fill="currentColor" /> 4.1
@@ -412,7 +412,6 @@ const Home = () => {
           </button>
         </div>
       </section>
-      <Footer />
     </>
   );
 };
