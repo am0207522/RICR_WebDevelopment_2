@@ -52,7 +52,7 @@ const Settings = () => {
 
         {/* Profile photo */}
         <div className="flex justify-center mb-6">
-          <div className="w-24 h-24 rounded-full overflow-hidden ring-4 ring-[#e7d9c9] shadow bg-[#e7d9c9] flex items-center justify-center">
+          <div className="w-24 h-24 rounded-full overflow-hidden ring-4 ring-[#bbb8b5] shadow bg-[#0c0c0c] flex items-center justify-center">
             <img
               src="/myImage.jpg"
               alt="Profile Photo"
