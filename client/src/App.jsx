@@ -7,6 +7,7 @@ import Register from "./pages/Register";
 import ContactUs from "./pages/ContactUs";
 import Navbar from "./components/Navbar";
 import UserDashboard from "./pages/dashboard/UserDashboard";
+import Footer from "./components/Footer";
 
 const App = () => {
   return (
@@ -19,11 +20,11 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/contact-us" element={<ContactUs />} />
-        <Route path="/" element={<Home />} />
 
         {/* dashborad routes */}
         <Route path="/userdashboard" element={<UserDashboard />} />
       </Routes>
+      <Footer/>
     </BrowserRouter>
     </>
   );
