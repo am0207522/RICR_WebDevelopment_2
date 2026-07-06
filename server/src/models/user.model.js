@@ -32,6 +32,9 @@ const UserSchema = mongoose.Schema(
         type: String,
         required: true,
       },
+      publicId: {
+        type: String,
+      },
     },
   },
   {
