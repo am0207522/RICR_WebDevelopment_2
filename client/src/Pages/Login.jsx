@@ -42,7 +42,7 @@ const Login = () => {
       const res = await api.post("/auth/login", payload);
       toast.success(res.data.message);
       // console.log(res.data.data.photo);
-      sessionStorage.setItem("UserData", JSON.stringify(res.data.data));
+      sessionStorage.setItem("cravingUser", JSON.stringify(res.data.data));
       setUser(res.data.data);
       setIsLogin(true);
       navigate("/userdashboard")
