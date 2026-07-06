@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import api from "../config/api.config";
 
 const ContactUs = () => {
-  const [contactData, setContactData] = useState({
+  const [contactData, setContactData] = useState({        /* some changes */
     fullName: "",
     email: "",
     phone: "",

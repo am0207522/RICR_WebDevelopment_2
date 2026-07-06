@@ -36,6 +36,8 @@
   --color-error-content: #fff;
 }
 
-/* button {
-  cursor:pointer;      "FOR UNIVERSAL HANDSIGN ON BUTTON INSTEAD OF CURSOR"
-} */
+ button {
+   cursor:pointer;
+}
+
+ /* "FOR UNIVERSAL HANDSIGN ON BUTTON INSTEAD OF CURSOR" */

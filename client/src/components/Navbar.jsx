@@ -2,12 +2,15 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { AiOutlineLogout } from "react-icons/ai";
+import { FaPowerOff } from "react-icons/fa";
 import api from "../config/api.config.js";
 import toast from "react-hot-toast";
 
 const Navbar = () => {
   const { user, setUser, isLogin, setIsLogin } = useAuth();
   const navigate = useNavigate();
+console.log("Navbar User:", user);
+console.log("Navbar Photo URL:", user?.photo?.url);
 
   const handleLogout = async () => {
     try {
@@ -58,8 +61,8 @@ const Navbar = () => {
             <div className="border-s-2 flex justify-center items-center gap-4 px-4">
               <div className="w-8 h-8 rounded-full overflow-hidden">
                 <img
-                  src={user.photo}
-                  alt=""
+                  src={user.photo.url}
+                  alt={user?.fullName}
                   className="w-full h-full object-cover"
                 />
               </div>
