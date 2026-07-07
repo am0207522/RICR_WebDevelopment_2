@@ -19,7 +19,7 @@ app.use(morgan("dev")); // - terminal mein requests dikhega
 app.use("/auth", AuthRouter); // - auth routes
 app.use("/public", PublicRouter); // - public routes
 app.use("/contact", ContactRouter); // - contact routes
-app.use("/user", UserRouter); // - user routes
+app.use("/user", UserRouter); // - user routess
 
 app.get("/", (req, res) => {
   // - default route
@@ -37,7 +37,7 @@ app.use((err, req, res, next) => {
 const port = process.env.PORT || 5000; // - port
 
 app.listen(port, async () => {
-  // - server listen
+  // - server listens
   console.log("Server Started on port:", port);
   connectDB();
 
