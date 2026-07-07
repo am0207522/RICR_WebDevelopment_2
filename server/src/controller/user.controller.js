@@ -21,7 +21,11 @@ export const EditUserProfile = async (req, res, next) => {
       return next(error);
     }
 
+    // here If new photo uploded the old photo get deleted from the cloudinary 
     if (newPhoto) {
+      existingUser?.photo?.publicId && 
+      (await cloudinary.uploader.destroy(existingUser.photo.publicId));
+
       const b64 = Buffer.from(newPhoto.buffer).toString("base64");
       const dataURI = `data:${newPhoto.mimetype};base64,${b64}`;
 
