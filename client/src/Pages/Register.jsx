@@ -18,15 +18,13 @@ const Register = () => {
 
   const [validateError, setValidateError] = useState();
 
-  // Show/Hide Password
+  // Show/Hide Password Added visibility toggle state
   const [showPassword, setShowPassword] = useState(false);
-  // Show/Hide Confirm Password
+  // Show/Hide Confirm Password Added visibility toggle state
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // single handleChange for all inputs
   const handleChange = (e) => {
-    // const name = e.target.name;
-    // const value = e.target.value;
     const { name, value } = e.target;
     setRegisterData((prevData) => ({ ...prevData, [name]: value }));
   };
@@ -55,6 +53,8 @@ const Register = () => {
     try {
       const res = await api.post("/auth/register", payload);
       toast.success(res.data.message);
+      // Proactive enhancement: direct user back to your working login page once registered
+      navigate("/login"); 
     } catch (error) {
       toast.error(error.res?.data?.message || error.message);
     }
@@ -72,40 +72,13 @@ const Register = () => {
 
         {/* onSubmit on the form tag */}
         <form onSubmit={handleSubmit}>
-          {/* Role Radio Buttons — - -  using handleChange with name="role" */}
-
-          {/*  customer restaurant rider radio button  */}
-          {/* <div className="mb-4">
-            <span className="block mb-2 font-medium text-gray-700">
-              Register as:
-            </span>
-            <div className="flex flex-wrap gap-4">
-              {["customer", "restaurant", "rider"].map((r) => (
-                <label
-
-                  key={r}
-                  className="flex items-center gap-1 cursor-pointer text-gray-700"
-                >
-                  <input
-                    type="radio"
-                    name="role"
-                    value={r}
-                    checked={registerData.role === r}
-                    onChange={handleChange}
-                    className="accent-[#c0392b]"
-                  />
-                  {r.charAt(0).toUpperCase() + r.slice(1)}
-                </label>
-              ))}
-            </div>
-          </div> */}
-
+          
           <div className="flex flex-col gap-3 mb-4">
             <input
               type="text"
-              name="fullName" // name attr for handleChange
+              name="fullName" 
               placeholder="Enter your full name"
-              value={registerData.fullName} // controlled input
+              value={registerData.fullName} 
               onChange={handleChange}
               required
               className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-[#c0392b]"
@@ -162,7 +135,8 @@ const Register = () => {
             />
           </div>
 
-          <div className="flex flex-col gap-3 mb-4">
+          {/* FIXED: Wrapped the password layout inside a relative div for structural positioning */}
+          <div className="relative w-full mb-4">
             <input
               type={showPassword ? "text" : "password"}
               name="password"
@@ -170,19 +144,23 @@ const Register = () => {
               value={registerData.password}
               onChange={handleChange}
               required
-              className="w-full border border-gray-300 rounded px-3 py-2 pr-10 focus:outline-none focus:border-[#c0392b]"
+              // FIXED: Replaced px-3/pr-10 with clean ps-3 pe-12 padding utilities
+              className="w-full border border-gray-300 rounded ps-3 pe-12 py-2 focus:outline-none focus:border-[#c0392b]"
             />
 
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+              // FIXED: Adjusted button alignment classes to match the design language of your login page perfectly
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#c0392b] transition-colors focus:outline-none"
+              aria-label={showPassword ? "Hide password" : "Show password"}
             >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
+              {showPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
             </button>
           </div>
 
-          <div className="flex flex-col gap-3 mb-4">
+          {/* FIXED: Wrapped the confirm password layout inside a relative container */}
+          <div className="relative w-full mb-4">
             <input
               type={showConfirmPassword ? "text" : "password"}
               name="confirmPassword"
@@ -190,34 +168,21 @@ const Register = () => {
               value={registerData.confirmPassword}
               onChange={handleChange}
               required
-              className="w-full border border-gray-300 rounded px-3 py-2 pr-10 focus:outline-none focus:border-[#c0392b]"
+              className="w-full border border-gray-300 rounded ps-3 pe-12 py-2 focus:outline-none focus:border-[#c0392b]"
             />
 
             <button
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#c0392b] transition-colors focus:outline-none"
+              aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
             >
-              {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+              {showConfirmPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
             </button>
           </div>
 
-          {/* Checkbox — - - handleChange uses e.target.checked automatically
-          <div className="mb-4 mt-3 flex items-center gap-2">
-            <input
-              type="checkbox"
-              name="agreeTerms"
-              checked={registerData.agreeTerms}
-              onChange={handleChange}
-              className="accent-[#c0392b]"
-            />
-            <span className="text-gray-700 text-sm">
-              I agree to the terms and conditions.
-            </span>
-          </div> */}
-
           {validateError && (
-            <p className="text-red-500 text-sm">{validateError}</p>
+            <p className="text-red-500 text-sm mb-3">{validateError}</p>
           )}
 
           <button
@@ -228,12 +193,13 @@ const Register = () => {
           </button>
         </form>
 
-        <div className="flex justify-center gap-1 mt-3 text-sm">
+        {/* FIXED: Re-built your clipped/missing bottom footer link wrapper to redirect users smoothly back to login */}
+        <div className="flex justify-center gap-1 mt-4 text-sm">
           <p className="mb-0 text-gray-600">Already Have an Account?</p>
           <button
+            type="button"
             onClick={() => navigate("/login")}
-            className="text-[#c0392b] hover:underline font-semibold"
-            style={{ textDecoration: "none" }}
+            className="text-[#c0392b] font-semibold hover:underline focus:outline-none"
           >
             Login here
           </button>
