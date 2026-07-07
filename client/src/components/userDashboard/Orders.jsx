@@ -18,7 +18,7 @@ const Orders = () => {
           <tbody>
             <tr className="border-b border-(--color-secondary)">
               <td colSpan="5" className="text-center py-4 text-(--color-neutral)">
-                No orders yet
+                No orders yets
               </td>
             </tr>
           </tbody>
