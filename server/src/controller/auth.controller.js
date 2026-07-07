@@ -51,12 +51,14 @@ export const LoginUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
+    // check login pass
     if (!email || !password) {
       const error = new Error("All fields Required");
       error.statusCode = 400;
       return next(error);
     }
 
+    //check in database user ?
     const existingUser = await User.findOne({ email });
     if (!existingUser) {
       const error = new Error("Email not registred");
@@ -64,6 +66,7 @@ export const LoginUser = async (req, res, next) => {
       return next(error);
     }
 
+// verify user with password
     const isVerified = await bcrypt.compare(password, existingUser.password);
     if (!isVerified) {
       const error = new Error("Incorrect Password");
@@ -71,8 +74,10 @@ export const LoginUser = async (req, res, next) => {
       return next(error);
     }
 
+    //genrate Token
     await genToken(existingUser, res);
 
+    // then log succesfully welcome back!
     res.status(200).json({
       message: "Welcome Back",
       data: existingUser,
