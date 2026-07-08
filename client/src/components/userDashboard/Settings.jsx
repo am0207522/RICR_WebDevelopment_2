@@ -100,7 +100,7 @@ const Settings = () => {
           )}
         </div>
 
-        {/* Profile photo */}
+        {/* Profile photo  */}
         <div className="flex justify-center mb-6">
           <div className="relative">
             <div className="w-24 h-24 rounded-full overflow-hidden ring-4 ring-[#e7d9c9] shadow">
