@@ -11,7 +11,7 @@ const Overview = () => {
         </div>
         <div className="bg-(--color-base-200) p-4 rounded-lg">
           <p className="text-(--color-neutral) text-sm">Total Spent</p>
-          <p className="text-3xl font-bold">$245</p>
+          <p className="text-3xl font-bold">$221</p>
         </div>
       </div>
       <div className="bg-(--color-base-200) p-4 rounded-lg">
