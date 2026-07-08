@@ -3,10 +3,16 @@ import { useNavigate } from "react-router-dom";
 import api from "../config/api.config";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
+// Added icons import
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
   const { setUser, setIsLogin, isLogin } = useAuth();
   const navigate = useNavigate();
+  
+  // Added visibility toggle state
+  const [showPassword, setShowPassword] = useState(false);
+
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
@@ -21,11 +27,9 @@ const Login = () => {
     setLoginData((prevData) => ({...prevData, [name]: value,}));
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic here, e.g., send loginData to the server
-    //Validate loginData
+    
     if (!loginData.email || !loginData.password) {
       setValidateError("Please fill in all fields.");
       return;
@@ -41,12 +45,12 @@ const Login = () => {
     try {
       const res = await api.post("/auth/login", payload);
       toast.success(res.data.message);
-      // console.log(res.data.data.photo);
       sessionStorage.setItem("cravingUser", JSON.stringify(res.data.data));
       setUser(res.data.data);
       setIsLogin(true);
       navigate("/userdashboard")
     } catch (error) {
+      // Kept exactly as your original code
       toast.error(error.response.status + " | " + error.response?.data?.message ||
       error.message);
     }
@@ -56,8 +60,8 @@ const Login = () => {
     <div
       className="h-[90vh] bg-[url('/foodTable.webp')] flex items-center justify-start bg-cover bg-center p-10 md:pe-30"
     >
-<div className="bg-white rounded-xl shadow-md px-10 py-8 max-w-md w-full min-h-[510px] flex flex-col pt-19">        
-  <h2 className="text-center text-3xl font-bold text-[#c0392b] mb-2">
+      <div className="bg-white rounded-xl shadow-md px-10 py-8 max-w-md w-full min-h-127.5 flex flex-col pt-19">        
+        <h2 className="text-center text-3xl font-bold text-[#c0392b] mb-2">
           Welcome Back
         </h2>
 
@@ -77,15 +81,28 @@ const Login = () => {
               className="w-full border border-gray-300 rounded px-3 py-3 focus:outline-none focus:border-[#c0392b]"
             />
 
-            <input
-              type="password"
-              name="password"
-              placeholder="Enter your password"
-              value={loginData.password}
-              onChange={handleChange}
-              required
-              className="w-full border border-gray-300 rounded px-3 py-3 focus:outline-none focus:border-[#c0392b]"
-            />
+            {/* Wrapped input in a relative wrapper for absolute positioning */}
+            <div className="relative w-full">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Enter your password"
+                value={loginData.password}
+                onChange={handleChange}
+                required
+                className="w-full border border-gray-300 rounded ps-3 pe-12 py-3 focus:outline-none focus:border-[#c0392b]"
+              />
+              
+              {/* Eye Toggle Button */}
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#c0392b] transition-colors focus:outline-none"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+              </button>
+            </div>
           </div>
 
           {validateError && (
@@ -96,7 +113,7 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full bg-[#c0392b] text-white py-3 mb-2  rounded font-semibold hover:bg-[#a93226] transition-colors"
+            className="w-full bg-[#c0392b] text-white py-3 mb-2 rounded font-semibold hover:bg-[#a93226] transition-colors"
           >
             Login
           </button>
@@ -136,6 +153,7 @@ const Login = () => {
 };
 
 export default Login;
+
 
 
 
