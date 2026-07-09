@@ -6,7 +6,10 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Register = () => {
   const navigate = useNavigate();
+
+  // SIR KA LOGIC: "userType" field add ki state mein (tumhare code mein missing thi — isi wajah se 400 error aa raha tha, backend ko userType chahiye hota hai)
   const [registerData, setRegisterData] = useState({
+    userType: "customer", // SIR KA LOGIC: default "customer" rakha
     fullName: "",
     gender: "",
     dob: "",
@@ -18,18 +21,22 @@ const Register = () => {
 
   const [validateError, setValidateError] = useState();
 
-  // Show/Hide Password Added visibility toggle state
   const [showPassword, setShowPassword] = useState(false);
-  // Show/Hide Confirm Password Added visibility toggle state
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  // single handleChange for all inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
     setRegisterData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  // async handleSubmit with e.preventDefault()
+  // SIR KA LOGIC: userType change karne ka alag handler (radio buttons ke liye)
+  const handleUserTypeChange = (e) => {
+    setRegisterData((prev) => ({
+      ...prev,
+      userType: e.target.value,
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -42,6 +49,8 @@ const Register = () => {
     console.log("Register data submitted:", registerData);
 
     const payload = {
+      // SIR KA LOGIC: userType payload mein add kiya (tumhare code mein ye missing tha — asli bug yahi tha)
+      userType: registerData.userType,
       fullName: registerData.fullName,
       gender: registerData.gender,
       dob: registerData.dob,
@@ -53,10 +62,13 @@ const Register = () => {
     try {
       const res = await api.post("/auth/register", payload);
       toast.success(res.data.message);
-      // Proactive enhancement: direct user back to your working login page once registered
-      navigate("/login"); 
+      navigate("/login");
     } catch (error) {
-      toast.error(error.res?.data?.message || error.message);
+      // MERA ADDON: safe optional chaining (tumhara error.res?.data typo tha — "res" nahi "response" hona chahiye)
+      toast.error(
+        error.response?.data?.message ||
+          "Unknown error occurred during registration. Please try again.",
+      );
     }
   };
 
@@ -70,15 +82,38 @@ const Register = () => {
           Join us as a Customer, Restaurant, or Rider
         </p>
 
-        {/* onSubmit on the form tag */}
+        {/* SIR KA LOGIC: userType selection UI add ki (tumhare form mein pehle ye section hi nahi tha) */}
+        <div className="mb-4">
+          <label className="block text-gray-700 font-semibold mb-2 text-sm">
+            Register as:
+          </label>
+          <div className="flex gap-5">
+            {["customer", "restaurant", "rider"].map((type) => (
+              <label
+                key={type}
+                className="flex items-center gap-2 cursor-pointer"
+              >
+                <input
+                  type="radio"
+                  name="userType"
+                  value={type}
+                  checked={registerData.userType === type}
+                  onChange={handleUserTypeChange}
+                  className="cursor-pointer"
+                />
+                <span className="text-gray-700 capitalize text-sm">{type}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
         <form onSubmit={handleSubmit}>
-          
           <div className="flex flex-col gap-3 mb-4">
             <input
               type="text"
-              name="fullName" 
+              name="fullName"
               placeholder="Enter your full name"
-              value={registerData.fullName} 
+              value={registerData.fullName}
               onChange={handleChange}
               required
               className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-[#c0392b]"
@@ -135,7 +170,6 @@ const Register = () => {
             />
           </div>
 
-          {/* FIXED: Wrapped the password layout inside a relative div for structural positioning */}
           <div className="relative w-full mb-4">
             <input
               type={showPassword ? "text" : "password"}
@@ -144,14 +178,12 @@ const Register = () => {
               value={registerData.password}
               onChange={handleChange}
               required
-              // FIXED: Replaced px-3/pr-10 with clean ps-3 pe-12 padding utilities
               className="w-full border border-gray-300 rounded ps-3 pe-12 py-2 focus:outline-none focus:border-[#c0392b]"
             />
 
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              // FIXED: Adjusted button alignment classes to match the design language of your login page perfectly
               className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#c0392b] transition-colors focus:outline-none"
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
@@ -159,7 +191,6 @@ const Register = () => {
             </button>
           </div>
 
-          {/* FIXED: Wrapped the confirm password layout inside a relative container */}
           <div className="relative w-full mb-4">
             <input
               type={showConfirmPassword ? "text" : "password"}
@@ -175,9 +206,17 @@ const Register = () => {
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#c0392b] transition-colors focus:outline-none"
-              aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
+              aria-label={
+                showConfirmPassword
+                  ? "Hide confirm password"
+                  : "Show confirm password"
+              }
             >
-              {showConfirmPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
+              {showConfirmPassword ? (
+                <FaEyeSlash size={18} />
+              ) : (
+                <FaEye size={18} />
+              )}
             </button>
           </div>
 
@@ -193,7 +232,6 @@ const Register = () => {
           </button>
         </form>
 
-        {/* FIXED: Re-built your clipped/missing bottom footer link wrapper to redirect users smoothly back to login */}
         <div className="flex justify-center gap-1 mt-4 text-sm">
           <p className="mb-0 text-gray-600">Already Have an Account?</p>
           <button
