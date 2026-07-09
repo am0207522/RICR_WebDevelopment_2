@@ -4,10 +4,12 @@ import { genToken } from "../utils/auth.service.js";
 
 export const RegisterUser = async (req, res, next) => {
   try {
-    const { fullName, email, password, phone, gender, dob, userType } = req.body; 
+    const { fullName, email, password, phone, gender, dob, userType } =
+      req.body;
 
-    if (!fullName || !email || !password || !phone || !gender || !dob || !userType) {
-      const error = new Error("All fields Required");
+    if (
+      !fullName || !email || !password || !phone || !gender || !dob || !userType) {
+    const error = new Error("All fields Required");
       error.statusCode = 400;
       return next(error);
     }
@@ -67,7 +69,7 @@ export const LoginUser = async (req, res, next) => {
       return next(error);
     }
 
-// verify user with password
+    // verify user with password
     const isVerified = await bcrypt.compare(password, existingUser.password);
     if (!isVerified) {
       const error = new Error("Incorrect Password");
