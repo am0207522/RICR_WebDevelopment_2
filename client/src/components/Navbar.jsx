@@ -6,7 +6,7 @@ import api from "../config/api.config.js";
 import toast from "react-hot-toast";
 
 const Navbar = () => {
-  const { user, setUser, isLogin, setIsLogin } = useAuth();
+  const { user, setUser, isLogin, setIsLogin, role } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -32,25 +32,20 @@ const Navbar = () => {
         {/* class="w-fit h-full" */}
         <div className="h-full">
           <Link to="/">
-            <img
-              src="/logo.png"
-              alt="Logo"
-              className="w-fit h-full"
-            />
+            <img src="/logo.png" alt="Logo" className="w-fit h-full" />
           </Link>
         </div>
 
         <div className="flex gap-2 items-center">
           <Link
-           to={"/"} 
-           className="text-(--color-primary-content) border border-transparent hover:border-(--color-primary-content) px-3 py-1 rounded"
-           
+            to={"/"}
+            className="text-(--color-primary-content) border border-transparent hover:border-(--color-primary-content) px-3 py-1 rounded"
           >
             Home
           </Link>
           <Link
-           to={"/contact-us"} 
-           className="text-(--color-primary-content) border border-transparent hover:border-(--color-primary-content) px-3 py-1 rounded"
+            to={"/contact-us"}
+            className="text-(--color-primary-content) border border-transparent hover:border-(--color-primary-content) px-3 py-1 rounded"
           >
             Contact us
           </Link>
@@ -63,12 +58,18 @@ const Navbar = () => {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <Link
-                to={"/userDashboard"}
-                className="hover:underline hover:text-(--accent)"
-              >
-                {user.fullName}
-              </Link>
+
+              <div className="flex flex-col items-start">
+                <Link
+                  to={"/customer-dashboard"}
+                  className="text-base hover:underline hover:text-(--accent)"
+                >
+                  {user.fullName}
+                </Link>
+                <span className="text-xs text-(--color-primary-content)/80 uppercase">
+                  {role}
+                </span>
+              </div>
               <button
                 onClick={handleLogout}
                 className="text-white hover:text-red-600"
@@ -85,7 +86,8 @@ const Navbar = () => {
                 Login
               </Link>
               <Link
-                to={"/register"} className="hover:underline"
+                to={"/register"}
+                className="hover:underline"
                 className="bg-(--color-primary-content) text-(--main) hover:bg-transparent hover:text-(--color-primary-content) border px-3 py-1 rounded"
               >
                 Register
