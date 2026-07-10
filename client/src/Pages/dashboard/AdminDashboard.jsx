@@ -5,13 +5,11 @@ import AdminSetting from "../../components/adminDashboard/AdminSetting";
 import AdminSidebar from "../../components/adminDashboard/AdminSidebar";
 import AdminOverview from "../../components/adminDashboard/AdminOverview";
 import AdminOrders from "../../components/adminDashboard/AdminOrders";
-
 const AdminDashboard = () => {
   const { isLogin, role } = useAuth();
   const navigate = useNavigate();
   const active = useLocation().state?.activeTab;
   const [activeTab, setActiveTab] = React.useState(active || "overview");
-
   if (!isLogin || role !== "admin") {
     return (
       <div className="h-[92vh] bg-[url('/foodTable.webp')]  bg-cover bg-center">
@@ -29,21 +27,19 @@ const AdminDashboard = () => {
       </div>
     );
   }
-
   return (
     <>
-      <div className="flex h-[92vh]">
-        <div className="w-1/6 border border-red-500 h-full">
-          <Sidebar active={active} setActive={setActive} />
+      <div className="h-[91vh] flex gap-2 p-2">
+        <div className="w-3/17 bg-(--color-base-200) p-4 rounded-lg shadow-md h-full">
+          <AdminSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
         </div>
-        <div className="w-5/6 border border-green-500 h-full P-3">
-          {active === "Overview" && <AdminOverview />}
-          {active === "Orders" && <AdminOrders />}
-          {active === "Settings" && <AdminSetting />}
+        <div className="w-14/17 bg-(--color-base-100) p-4 rounded-lg shadow-md h-full">
+          {activeTab === "overview" && <AdminOverview />}
+          {activeTab === "orders" && <AdminOrders />}
+          {activeTab === "settings" && <AdminSetting />}
         </div>
       </div>
     </>
   );
 };
-
 export default AdminDashboard;
