@@ -30,7 +30,7 @@ const RiderSidebar = ({ activeTab, setActiveTab }) => {
     <>
       <div className="p-3 bg-white rounded-2xl shadow-lg pb-0.5rem !important flex flex-col h-full">
         <div className="border-b-2 border-[#e7d9c9] text-center text-xl font-bold text-[#2d1b10] pb-3 pt-3">
-          User Dashboard
+          Rider Dashboard
         </div>
 
         <div className="space-y-1 p-4 mt-2">
