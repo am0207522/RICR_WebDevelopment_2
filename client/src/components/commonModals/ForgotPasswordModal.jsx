@@ -106,7 +106,6 @@
 
 // export default ForgotPasswordModal;
 
-
 import React from "react";
 import { useState } from "react";
 import { IoIosCloseCircleOutline } from "react-icons/io";
@@ -155,9 +154,33 @@ const ForgotPasswordModal = ({ open, onClose }) => {
         setIsOtpVerified(true);
       }
       if (isOtpSent && isOtpVerified) {
+        if (formData.newPassword !== formData.confirmNewPassword) {
+          toast.error("New Password and Confirm Password do not match.");
+          return;
+        }
+// User enters the passwords
+//         │
+//         ▼
+// then Frontend checks passwords
+//         │
+//    Match? ── No ──► Show toast ❌ (API call nahi hoga)
+//         │
+//        Yes
+//         │
+//         ▼
+// API request
+//         │
+//         ▼
+// Backend checks passwords again
+//         │
+//    Match? ── No ──► Return 400 Error ❌
+//         │
+//        Yes
+//         │
+//         ▼
+// Password hash + Save in DB ✅
         const res = await api.post("/auth/reset-password", formData);
         toast.success(res.data.message);
-        setIsOtpVerified(true);
         handleCloseModal();
       }
     } catch (error) {
@@ -241,7 +264,7 @@ const ForgotPasswordModal = ({ open, onClose }) => {
                       Confirm Your New Password
                     </label>
                     <input
-                      type="text"
+                      type="password"
                       id="confirmNewPassword"
                       name="confirmNewPassword"
                       value={formData.confirmNewPassword}
