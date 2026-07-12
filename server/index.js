@@ -3,8 +3,7 @@ import express from "express";
 import connectDB from "./src/config/dbConnection.config.js";
 import AuthRouter from "./src/router/auth.route.js"; // - auth routes
 import PublicRouter from "./src/router/public.route.js"; // - public routes
-import ContactRouter from "./src/router/contact.route.js"; // - contact routes
-import UserRouter from "./src/router/user.route.js"; // - user routes
+import CommonRouter from "./src/router/common.route.js";
 import morgan from "morgan"; // - request logger
 import cors from "cors"; // - cors
 import cookieParser from "cookie-parser"; // - cokkie import
@@ -18,15 +17,16 @@ app.use(morgan("dev")); // - terminal mein requests dikhega
 
 app.use("/auth", AuthRouter); // - auth routes
 app.use("/public", PublicRouter); // - public routes
-app.use("/contact", ContactRouter); // - contact routes
-app.use("/user", UserRouter); // - user routess
+app.use("/common", CommonRouter);
 
+// HERE , DEFAULT API
 app.get("/", (req, res) => {
   // - default route
   console.log("Default Get API Hit");
   res.json({ message: "Welcome to my Cravings Project" });
 });
 
+//HERE , Default API
 app.use((err, req, res, next) => {
   // - error handling middleware
   const ErrMessage = err.message || "Internal Server Error";
