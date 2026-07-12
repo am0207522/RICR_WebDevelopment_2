@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import api from "../../config/api.config";
 import toast from "react-hot-toast";
 import { MdOutlineAddAPhoto } from "react-icons/md";
+import PasswordChangeModal from "../commonModals/PasswordChangeModal";
 
 const RiderSetting = () => {
   const { user, setUser } = useAuth();
@@ -11,6 +12,8 @@ const RiderSetting = () => {
   const [profilePic, setProfilePic] = useState(null);
   const [profilePicPreview, setProfilePicPreview] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isPasswordChangeModalOpen, setIsPasswordChangeModalOpen] =
+   useState(false);
 
   const [formData, setFormData] = useState({
     fullName: user?.fullName || "",
@@ -64,11 +67,12 @@ const RiderSetting = () => {
   };
 
   return (
+    <>
     <div className="min-h-[70vh] bg-[#fff8f1] flex items-center justify-center px-4 py-10">
       <div className="w-full max-w-xl bg-white rounded-2xl shadow-lg p-6 md:p-8">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-[#2d1b10]">
-            Profile Settings
+            Profile Information
           </h2>
           {!editingProfile ? (
             <button
@@ -179,6 +183,13 @@ const RiderSetting = () => {
         </div>
       </div>
     </div>
+          {isPasswordChangeModalOpen && (
+        <PasswordChangeModal
+          open={isPasswordChangeModalOpen}
+          onClose={() => setIsPasswordChangeModalOpen(false)}
+        />
+      )}
+    </>
   );
 };
 
