@@ -35,12 +35,12 @@ const RestaurantDashboard = () => {
     <>
       <div className="flex h-[92vh]">
         <div className="w-1/6 border border-red-500 h-full">
-          <Sidebar active={active} setActive={setActive} />
+          <RestaurantSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
         </div>
         <div className="w-5/6 border border-green-500 h-full P-3">
-          {active === "Overview" && <RestaurantOverview />}
-          {active === "Orders" && <RestaurantOrders />}
-          {active === "Settings" && <RestaurantSetting />}
+          {activeTab === "overview" && <RestaurantOverview />}
+          {activeTab === "orders" && <RestaurantOrders />}
+          {activeTab === "settings" && <RestaurantSetting />}
         </div>
       </div>
     </>
