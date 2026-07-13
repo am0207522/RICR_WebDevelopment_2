@@ -190,7 +190,14 @@ export const VerifyOtp = async (req, res, next) => {
 };
 export const ResetPassword = async (req, res, next) => {
   try {
-    const { newPassword } = req.body;
+    const { newPassword, confirmNewPassword } = req.body;
+    if (newPassword !== confirmNewPassword) {
+      const error = new Error(
+        "New Password and Confirm Password do not match.",
+      );
+      error.statusCode = 400;
+      return next(error);
+    }
 
     const currentUser = req.user;
 
