@@ -382,12 +382,12 @@ const Login = () => {
                 />
                 <span className="text-sm">Remember me</span>
               </label>
-              <button
+              <div
                 type="button"
                 onClick={() => setIsForgotPasswordModalOpen(true)}
               >
                 Forgot Password?
-              </button>
+              </div>
             </div>
 
             {/* Login Button */}
