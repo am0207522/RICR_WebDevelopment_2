@@ -34,6 +34,16 @@ const CustomerSchema = mongoose.Schema(
           },
         },
       ],
+
+      isActive: {
+        type: Boolean,
+        default: true,
+      },
+      status: {
+        type: String,
+        enum: ["pending", "verified", "suspended"],
+        default: "pending",
+      },
     },
   },
   { timestamps: true },
