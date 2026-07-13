@@ -4,6 +4,7 @@ import connectDB from "./src/config/dbConnection.config.js";
 import AuthRouter from "./src/router/auth.route.js"; // - auth routes
 import PublicRouter from "./src/router/public.route.js"; // - public routes
 import CommonRouter from "./src/router/common.route.js";
+import RestaurantRouter from "./src/router/restaurant.route.js";
 import morgan from "morgan"; // - request logger
 import cors from "cors"; // - cors
 import cookieParser from "cookie-parser"; // - cokkie import
@@ -18,6 +19,7 @@ app.use(morgan("dev")); // - terminal mein requests dikhega
 app.use("/auth", AuthRouter); // - auth routes
 app.use("/public", PublicRouter); // - public routes
 app.use("/common", CommonRouter);
+app.use("/restaurant", RestaurantRouter);
 
 // HERE , DEFAULT API
 app.get("/", (req, res) => {
