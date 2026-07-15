@@ -30,7 +30,7 @@ export const genToken = async (user, res) => {
       expiresIn: "1d",
     });
 
-    res.cookie("Oreo", token, {
+    res.cookie("Cravings", token, {
       maxAge: 1000 * 60 * 60 * 24,
       httpOnly: true,
       secure: false,
