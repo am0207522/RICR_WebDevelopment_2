@@ -22,7 +22,7 @@ const Footer = () => {
             />
           </div>
 
-          {/* Link columns */}
+          {/* Link columnss */}
           <div className="grid grid-cols-2 gap-8 w-full md:flex md:justify-between md:w-full text-center md:text-left">
             <div>
               <h5 className="font-bold text-white mb-3">Quick Links</h5>
