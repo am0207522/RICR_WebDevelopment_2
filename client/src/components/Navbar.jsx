@@ -12,11 +12,13 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       const res = await api.get("/auth/logout");
-      sessionStorage.removeItem("UserData");
-      setIsLogin(false);
-      setUser(false);
-      navigate("/");
       toast.success(res.data.message);
+
+      sessionStorage.removeItem("cravingUser");
+      setUser(null);
+      setIsLogin(false);
+      setRole(null);
+      navigate("/");
     } catch (error) {
       toast.error(
         error.response.status + " | " + error.response?.data?.message ||
