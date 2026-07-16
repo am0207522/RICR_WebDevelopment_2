@@ -10,7 +10,7 @@ import RunningLoader from "../../../assets/runningLoader.gif";
 const ResturantCoreDetails = () => {
   const { user, setUser } = useAuth();
 
-  // Common State variables
+  // Common State variabless
   const [isLoading, setIsLoading] = useState(false);
   const [isPasswordChangeModalOpen, setIsPasswordChangeModalOpen] =
     useState(false);
