@@ -68,7 +68,7 @@ const CustomerSetting = () => {
   };
 
   return (
-    // NNNEEEWWW: return ko <>...</> mein wrap kiya, kyunki ab card + modal do top-level elements hain
+    // NNNEEEWWW: return ko <>...</> mein wrap kiya, kyunki ab card + modal do top-level elements hainn
     <>
       <div className="min-h-[70vh] bg-[#fff8f1] flex items-center justify-center px-4 py-10">
         <div className="w-full max-w-xl bg-white rounded-2xl shadow-lg p-6 md:p-8">
