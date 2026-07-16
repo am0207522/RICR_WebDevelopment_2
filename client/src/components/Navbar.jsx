@@ -28,7 +28,7 @@ const Navbar = () => {
   return (
     <>
       <div className="sticky top-0 z-99 flex items-center justify-between px-12 py-1 bg-(--main) text-white w-full h-16 shadow-md">
-        {/* cravings_Logo  */}
+        {/* cravings_Logoo  */}
         {/* class="w-fit h-full" */}
         <div className="h-full">
           <Link to="/">
