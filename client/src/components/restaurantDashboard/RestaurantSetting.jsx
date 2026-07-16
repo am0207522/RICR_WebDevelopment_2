@@ -99,7 +99,7 @@ export default RestaurantSetting;
 //   const [isPasswordChangeModalOpen, setIsPasswordChangeModalOpen] =
 //     useState(false);
 
-//   // Profile handlers
+//   // Profile handlerss
 
 //   const [editingProfile, setEditingProfile] = useState(false);
 //   const [profilePic, setProfilePic] = useState(null);
