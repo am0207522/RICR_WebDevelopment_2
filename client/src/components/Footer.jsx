@@ -11,7 +11,7 @@ const Footer = () => {
           restaurants and riders. ---
         </p>
 
-        {/* Logo + Link columns row */}
+        {/* Logo + Link columnss row */}
         <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-10 md:gap-16 mb-10">
           {/* Logo */}
           <div className="shrink-0">
@@ -120,7 +120,7 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Divider */}
+        {/* Dividerr */}
         <div className="border-t border-white/20 mb-6"></div>
 
         {/* Bottom row: copyright + policy links */}
