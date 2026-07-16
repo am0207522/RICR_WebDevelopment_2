@@ -75,7 +75,7 @@ const RiderSetting = () => {
             Profile Information
           </h2>
           {!editingProfile ? (
-            // NNNEEEWWW: Edit button ko div mein wrap kiya taaki Change Password button side-by-side aa sake
+            // NNNEEEWWW: Edit button ko div mein wrap kiya taaki Change Password button side-by-side aaa sake
             <div className="flex gap-2">
               <button
                 onClick={() => setEditingProfile(true)}
