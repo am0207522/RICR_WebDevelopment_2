@@ -54,7 +54,7 @@ const ContactUs = () => {
     };
 
 try {
-  const res = await api.post("/contact", payload);
+  const res = await api.post("/public/contact-us", payload);
 
   setSuccessMessage(
     res.data.message || "Thank you for contacting us! We'll get back to you soon."

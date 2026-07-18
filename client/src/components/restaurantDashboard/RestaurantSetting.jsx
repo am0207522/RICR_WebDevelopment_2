@@ -22,15 +22,18 @@ const RestaurantSetting = () => {
         <div className="border-b border-(--color-secondary)/50 flex justify-between mb-2 w-full">
           <div className="flex gap-3 ">
             {Tabs.map((tab, idx) => (
-              <>
-                <div
-                  key={idx}
-                  className={`p-2 uppercase cursor-pointer ${activeTab === tab.id ? "text-(--color-primary) border-b-3 border-(--color-primary)" : ""}`}
-                  onClick={() => setActiveTab(tab.id)}
-                >
-                  {tab.label}
-                </div>
-              </>
+              // FIXED: key was on the <div> but this whole block was wrapped in an
+              // extra <>...</> fragment, so React was actually looking for the key
+              // on the fragment (which can't hold one via shorthand syntax) — hence
+              // the "unique key prop" warning. The fragment wasn't doing anything
+              // useful here (only one child), so it's just removed.
+              <div
+                key={tab.id}
+                className={`p-2 uppercase cursor-pointer ${activeTab === tab.id ? "text-(--color-primary) border-b-3 border-(--color-primary)" : ""}`}
+                onClick={() => setActiveTab(tab.id)}
+              >
+                {tab.label}
+              </div>
             ))}
           </div>
 
@@ -56,25 +59,6 @@ const RestaurantSetting = () => {
 };
 
 export default RestaurantSetting;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

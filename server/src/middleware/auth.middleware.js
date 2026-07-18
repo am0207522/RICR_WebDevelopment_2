@@ -3,7 +3,9 @@ import User from "../models/user.model.js";
 
 export const AuthProtect = async (req, res, next) => {
   try {
-    const token = req.cookies.Oreo;
+    // FIXED: this was `req.cookies.` with no cookie name at all (invalid / always
+    // undefined). genToken() sets the cookie as "Cravings", so read that here.
+    const token = req.cookies.Cravings;
     if (!token) {
       const error = new Error("Session Expired");
       error.statusCode = 401;
@@ -78,7 +80,8 @@ export const OTPAuthProtect = async (req, res, next) => {
 
 export const RestaurantAuthProtect = async (req, res, next) => {
   try {
-    const token = req.cookies.Oreo;
+    // FIXED: was reading "Oreo" — genToken() actually sets the cookie as "Cravings".
+    const token = req.cookies.Cravings;
     if (!token) {
       const error = new Error("Session Expired");
       error.statusCode = 401;

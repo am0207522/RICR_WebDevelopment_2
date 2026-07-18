@@ -36,7 +36,7 @@ export const RestaurantGetData = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error.message);
-    next();
+    next(error);
   }
 };
 
@@ -50,13 +50,23 @@ export const RestaurantUpdateProfile = async (req, res, next) => {
 
     const dataKeys = Object.keys(restaurantDataFromFE);
 
-    dataKeys.forEach((key) => {
-      if (!restaurantDataFromFE[key]) {
+    // FIXED: this used to check `!restaurantDataFromFE[key]`, which treats
+    // false, 0, and "" as "missing" — that broke saving isOpen:false (and would
+    // break any other legitimately falsy field too). Now only undefined/null
+    // count as missing. Also changed forEach -> for...of with a real early
+    // return, since `return` inside a forEach callback only exits that one
+    // iteration, not the whole request — the old code could still (in theory)
+    // call next(error) more than once.
+    for (const key of dataKeys) {
+      if (
+        restaurantDataFromFE[key] === undefined ||
+        restaurantDataFromFE[key] === null
+      ) {
         const error = new Error(`Missing required field: ${key}`);
         error.statusCode = 400;
         return next(error);
       }
-    });
+    }
 
     const existingRestaurant = await Restaurant.findOne({
       managerId: currentUser._id,
@@ -112,7 +122,7 @@ export const RestaurantUpdateProfile = async (req, res, next) => {
       }
       dataKeys.forEach((key) => {
         existingRestaurant[key] =
-          restaurantDataFromFE[key] || existingRestaurant[key];
+          restaurantDataFromFE[key] ?? existingRestaurant[key];
       });
       await existingRestaurant.save();
       return res.status(200).json({
@@ -122,6 +132,6 @@ export const RestaurantUpdateProfile = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error.message);
-    next();
+    next(error);
   }
 };

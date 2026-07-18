@@ -6,7 +6,10 @@ import api from "../config/api.config.js";
 import toast from "react-hot-toast";
 
 const Navbar = () => {
-  const { user, setUser, isLogin, setIsLogin, role } = useAuth();
+  // FIXED: setRole was missing here, but handleLogout calls setRole(null) below —
+  // that threw "setRole is not defined", which then made the catch block below
+  // crash a second time trying to read error.response.status on a non-axios error.
+  const { user, setUser, isLogin, setIsLogin, role, setRole } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -20,9 +23,12 @@ const Navbar = () => {
       setRole(null);
       navigate("/");
     } catch (error) {
+      // FIXED: error.response can be undefined (network error, or a non-axios
+      // error like the ReferenceError above) — reading .status on it directly
+      // crashes. Use optional chaining throughout and fall back to error.message.
       toast.error(
-        error.response.status + " | " + error.response?.data?.message ||
-          error.message,
+        (error.response?.status ? error.response.status + " | " : "") +
+          (error.response?.data?.message || error.message),
       );
     }
   };
@@ -103,3 +109,111 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
+
+// import React from "react";
+// import { Link, useNavigate } from "react-router-dom";
+// import { useAuth } from "../context/AuthContext";
+// import { AiOutlineLogout } from "react-icons/ai";
+// import api from "../config/api.config.js";
+// import toast from "react-hot-toast";
+
+// const Navbar = () => {
+//   const { user, setUser, isLogin, setIsLogin, role } = useAuth();
+//   const navigate = useNavigate();
+
+//   const handleLogout = async () => {
+//     try {
+//       const res = await api.get("/auth/logout");
+//       toast.success(res.data.message);
+
+//       sessionStorage.removeItem("cravingUser");
+//       setUser(null);
+//       setIsLogin(false);
+//       setRole(null);
+//       navigate("/");
+//     } catch (error) {
+//       toast.error(
+//         error.response.status + " | " + error.response?.data?.message ||
+//           error.message,
+//       );
+//     }
+//   };
+
+//   return (
+//     <>
+//       <div className="sticky top-0 z-99 flex items-center justify-between px-12 py-1 bg-(--main) text-white w-full h-16 shadow-md">
+//         {/* cravings_Logoo  */}
+//         {/* class="w-fit h-full" */}
+//         <div className="h-full">
+//           <Link to="/">
+//             <img src="/logo.png" alt="Logo" className="w-fit h-full" />
+//           </Link>
+//         </div>
+
+//         <div className="flex gap-2 items-center">
+//           <Link
+//             to={"/"}
+//             className="text-(--color-primary-content) border border-transparent hover:border-(--color-primary-content) px-3 py-1 rounded"
+//           >
+//             Home
+//           </Link>
+//           <Link
+//             to={"/contact-us"}
+//             className="text-(--color-primary-content) border border-transparent hover:border-(--color-primary-content) px-3 py-1 rounded"
+//           >
+//             Contact us
+//           </Link>
+//           {isLogin ? (
+//             <div className="border-s-2 flex justify-center items-center gap-4 px-4">
+//               <div className="w-8 h-8 rounded-full overflow-hidden">
+//                 <img
+//                   src={user.photo.url}
+//                   alt={user?.fullName}
+//                   className="w-full h-full object-cover"
+//                 />
+//               </div>
+
+//               <div className="flex flex-col items-start">
+//                 <Link
+//                   to={"/customer-dashboard"}
+//                   className="text-base hover:underline hover:text-(--accent)"
+//                 >
+//                   {user.fullName}
+//                 </Link>
+//                 <span className="text-xs text-(--color-primary-content)/80 uppercase">
+//                   {role}
+//                 </span>
+//               </div>
+//               <button
+//                 onClick={handleLogout}
+//                 className="text-white hover:text-red-600"
+//               >
+//                 <AiOutlineLogout />
+//               </button>
+//             </div>
+//           ) : (
+//             <>
+//               <Link
+//                 to={"/login"}
+//                 className="text-(--color-primary-content) border border-transparent hover:border-(--color-primary-content) px-3 py-1 rounded"
+//               >
+//                 Login
+//               </Link>
+//               <Link
+//                 to={"/register"}
+//                 className="hover:underline"
+//                 className="bg-(--color-primary-content) text-(--main) hover:bg-transparent hover:text-(--color-primary-content) border px-3 py-1 rounded"
+//               >
+//                 Register
+//               </Link>
+//             </>
+//           )}
+//         </div>
+//       </div>
+//     </>
+//   );
+// };
+
+// export default Navbar;
