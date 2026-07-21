@@ -41,3 +41,14 @@
 }
 
  /* "FOR UNIVERSAL HANDSIGN ON BUTTON INSTEAD OF CURSOR" */
+
+
+ input[type="password"]::-ms-reveal {
+  display: none;
+}
+
+textarea:disabled,
+select:disabled,
+input:disabled {
+  cursor: not-allowed;
+}
