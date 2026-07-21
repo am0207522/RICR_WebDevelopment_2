@@ -4,7 +4,10 @@ import connectDB from "./src/config/dbConnection.config.js";
 import AuthRouter from "./src/router/auth.route.js"; // - auth routes
 import PublicRouter from "./src/router/public.route.js"; // - public routes
 import CommonRouter from "./src/router/common.route.js";
+import AdminRouter from "./src/router/admin.route.js";
 import RestaurantRouter from "./src/router/restaurant.route.js";
+import CustomerRouter from "./src/router/customer.route.js";
+import RiderRouter from "./src/router/rider.route.js";
 import morgan from "morgan"; // - request logger
 import cors from "cors"; // - cors
 import cookieParser from "cookie-parser"; // - cokkie import
@@ -13,13 +16,16 @@ const app = express();
 
 app.use(cors({ origin: "http://localhost:5173", credentials: true })); // - frontend allow karo
 app.use(express.json()); // - JSON body parser
-app.use(cookieParser()); // - cookie parser
+app.use(cookieParser()); // - for cookie parser
 app.use(morgan("dev")); // - terminal mein requests dikhega
 
 app.use("/auth", AuthRouter); // - auth routes
 app.use("/public", PublicRouter); // - public routes
 app.use("/common", CommonRouter);
+app.use("/admin", AdminRouter);
 app.use("/restaurant", RestaurantRouter);
+app.use("/customer", CustomerRouter);
+app.use("/rider", RiderRouter);
 
 // HERE , DEFAULT API
 app.get("/", (req, res) => {

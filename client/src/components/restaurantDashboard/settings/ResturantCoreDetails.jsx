@@ -189,6 +189,19 @@ const ResturantCoreDetails = () => {
     setEditingRestaurant(false);
   };
 
+  const handleGetLocation = () => {
+    try {
+      navigator.geolocation.getCurrentPosition((position) => {
+        console.log(position.coords.latitude, position.coords.longitude);
+        setRestaurantFormData((prev) => ({
+          ...prev,
+          geoLat: position.coords.latitude,
+          geoLon: position.coords.longitude,
+        }));
+      });
+    } catch (error) {}
+  };
+
   const fetchRestaurantData = async () => {
     try {
       setIsLoadingRestaurant(true);
@@ -258,6 +271,15 @@ const ResturantCoreDetails = () => {
                     </div>
                   ) : (
                     <div className="flex gap-2 justify-end">
+                      <button
+                        onClick={handleGetLocation}
+                        className="flex items-center gap-2 bg-(--color-primary) text-(--color-primary-content) px-2 py-0.5 rounded text-xs"
+                        disabled={isLoading}
+                      >
+                        {isLoading
+                          ? "Getting Current Location..."
+                          : "Get Current Location"}
+                      </button>
                       <button
                         onClick={handleSaveRestaurant}
                         className="flex items-center gap-2 bg-(--color-primary) text-(--color-primary-content) px-2 py-0.5 rounded text-xs"
@@ -343,7 +365,7 @@ const ResturantCoreDetails = () => {
                         onChange={handleRestaurantChange}
                         placeholder="e.g. 28.6139"
                         className={`w-full px-1.5 py-1 border border-(--color-secondary) ${editingRestaurant ? "bg-white" : "bg-(--color-base-100)"} rounded`}
-                        disabled={!editingRestaurant}
+                        disabled
                       />
                     </div>
 
@@ -356,7 +378,7 @@ const ResturantCoreDetails = () => {
                         onChange={handleRestaurantChange}
                         placeholder="e.g. 77.2090"
                         className={`w-full px-1.5 py-1 border border-(--color-secondary) ${editingRestaurant ? "bg-white" : "bg-(--color-base-100)"} rounded`}
-                        disabled={!editingRestaurant}
+                        disabled
                       />
                     </div>
                   </div>
@@ -404,8 +426,6 @@ const ResturantCoreDetails = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-2 justify-center items-center">
                   <div className="w-full">
                     <label className="text-xs font-semibold">Bank Name</label>
-                    {/* FIXED: was name="bankName" but value={restaurantFormData?.address} —
-                        now correctly bound to its own bankName key. */}
                     <input
                       type="text"
                       name="bankName"
@@ -419,7 +439,7 @@ const ResturantCoreDetails = () => {
                     <label className="text-xs font-semibold">
                       Account Number
                     </label>
-                    {/* FIXED: was bound to restaurantFormData?.city */}
+                    \{" "}
                     <input
                       type="text"
                       name="accountNumber"
@@ -445,7 +465,7 @@ const ResturantCoreDetails = () => {
                     <label className="text-xs font-semibold">
                       Pan Card Number
                     </label>
-                    {/* FIXED: was bound to restaurantFormData?.pinCode */}
+                    \{" "}
                     <input
                       type="text"
                       name="panCard"
@@ -457,7 +477,6 @@ const ResturantCoreDetails = () => {
                   </div>
                   <div className="w-full">
                     <label className="text-xs font-semibold">GST Number</label>
-                    {/* FIXED: was bound to restaurantFormData?.country */}
                     <input
                       type="text"
                       name="gstCertificate"
@@ -470,7 +489,6 @@ const ResturantCoreDetails = () => {
 
                   <div className="w-full">
                     <label className="text-xs font-semibold">fssai Code</label>
-                    {/* FIXED: was also bound to restaurantFormData?.country */}
                     <input
                       type="text"
                       name="fssaiCertificate"
@@ -524,7 +542,6 @@ const ResturantCoreDetails = () => {
                 <div className="grid grid-cols-2 gap-2">
                   <div className="w-full">
                     <label className="text-xs font-semibold">Legal Name</label>
-                    {/* FIXED: was bound to restaurantFormData?.contactPhone */}
                     <input
                       type="text"
                       name="legalName"
@@ -538,9 +555,6 @@ const ResturantCoreDetails = () => {
                     <label className="text-xs font-semibold">
                       Company Type
                     </label>
-                    {/* FIXED: was also bound to restaurantFormData?.contactPhone
-                        (same key as Legal Name — typing in either one overwrote
-                        the other's displayed value) */}
                     <input
                       type="text"
                       name="companyType"
