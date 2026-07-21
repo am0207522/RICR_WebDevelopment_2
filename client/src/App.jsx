@@ -11,7 +11,7 @@ import ContactUs from "./pages/ContactUs";
 import RestaurantDashboard from "./pages/dashboard/RestaurantDashboard";
 import RiderDashboard from "./pages/dashboard/RiderDashboard";
 import AdminDashboard from "./pages/dashboard/AdminDashboard";
-
+import Test from "./pages/Test";
 
 const App = () => {
   return (
@@ -20,17 +20,18 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/contact-us" element={<ContactUs />} />        
-
+        <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/register/:userType" element={<Register />} />
-        <Route path="/customer-dashboard" element={<CustomerDashboard />} />      {/* dashborad routes */} 
+        <Route path="/customer-dashboard" element={<CustomerDashboard />} />
+        {/* dashborad routes */}
         <Route path="/restaurant-dashboard" element={<RestaurantDashboard />} />
         <Route path="/rider-dashboard" element={<RiderDashboard />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/test" element={<Test />} />
       </Routes>
-      <Footer/>
+      <Footer />
     </>
   );
 };
