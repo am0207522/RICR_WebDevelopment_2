@@ -5,6 +5,7 @@ import {
   RestaurantGetData,
   RestaurantUpdateInfo,
   OpenRestaurant,
+  RestaurantUpdateLegalInfo,
 } from "../controller/restaurant.controller.js";
 import { RestaurantAuthProtect } from "../middleware/auth.middleware.js";
 
@@ -32,5 +33,11 @@ router.patch(
   RestaurantAuthProtect,
   OpenRestaurant,
 );
+
+router.put(
+  "/update-legal-info",
+  RestaurantAuthProtect,
+  RestaurantUpdateLegalInfo,
+); 
 
 export default router;
