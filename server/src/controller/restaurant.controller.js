@@ -14,14 +14,13 @@ export const RestaurantGetData = async (req, res, next) => {
     console.log("Current User:", currentUser);
     console.log("Manager ID:", managerId);
 
-
     if (currentUser._id.toString() !== managerId) {
       const error = new Error("Unauthorized Access");
       error.statusCode = 401;
       return next(error);
     }
 
-    const restaurantData = await Restaurant.find({ managerId });
+    const restaurantData = await Restaurant.findOne({ managerId });
 
     if (restaurantData) {
       res.status(200).json({
@@ -36,12 +35,11 @@ export const RestaurantGetData = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error.message);
-    next(error);
+    next();
   }
 };
 
 export const RestaurantUpdateProfile = async (req, res, next) => {
-
   try {
     const currentUser = req.user;
     const restaurantDataFromFE = req.body;
@@ -50,16 +48,13 @@ export const RestaurantUpdateProfile = async (req, res, next) => {
 
     const dataKeys = Object.keys(restaurantDataFromFE);
 
-    for (const key of dataKeys) {
-      if (
-        restaurantDataFromFE[key] === undefined ||
-        restaurantDataFromFE[key] === null
-      ) {
+    dataKeys.forEach((key) => {
+      if (!restaurantDataFromFE[key]) {
         const error = new Error(`Missing required field: ${key}`);
         error.statusCode = 400;
         return next(error);
       }
-    }
+    });
 
     const existingRestaurant = await Restaurant.findOne({
       managerId: currentUser._id,
@@ -115,7 +110,7 @@ export const RestaurantUpdateProfile = async (req, res, next) => {
       }
       dataKeys.forEach((key) => {
         existingRestaurant[key] =
-          restaurantDataFromFE[key] ?? existingRestaurant[key];
+          restaurantDataFromFE[key] || existingRestaurant[key];
       });
       await existingRestaurant.save();
       return res.status(200).json({
@@ -125,7 +120,7 @@ export const RestaurantUpdateProfile = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error.message);
-    next(error);
+    next();
   }
 };
 
@@ -229,6 +224,45 @@ export const OpenRestaurant = async (req, res, next) => {
 
     return res.status(200).json({
       message: `${OpenStatus ? "Restaurant is Live Now" : "Restaurant is Offline"}`,
+      data: existingRestaurant,
+    });
+  } catch (error) {
+    console.log(error.message);
+    next();
+  }
+};
+
+export const RestaurantUpdateLegalInfo = async (req, res, next) => {
+  try {
+    const currentUser = req.user;
+    const { legalName, companyType } = req.body;
+
+
+    if (!legalName || !companyType) {
+      const error = new Error("All fields are required");
+      error.statusCode = 400;
+      return next(error);
+    }
+
+    const existingRestaurant = await Restaurant.findOne({
+      managerId: currentUser._id,
+    });
+
+    if (!existingRestaurant) {
+      const error = new Error("Restaurant Not Found");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    existingRestaurant.legal = {
+      legalName,
+      companyType,
+    };
+
+    await existingRestaurant.save();
+
+    return res.status(200).json({
+      message: "Legal information updated successfully",
       data: existingRestaurant,
     });
   } catch (error) {
