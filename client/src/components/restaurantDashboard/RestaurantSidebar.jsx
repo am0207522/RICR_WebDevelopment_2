@@ -2,11 +2,13 @@ import React from "react";
 import { MdOutlineDashboard, MdOutlineFastfood } from "react-icons/md";
 import { PiListHeartLight } from "react-icons/pi";
 import { BsPersonGear } from "react-icons/bs";
+import { MdMenuBook } from "react-icons/md";
 
 const RestaurantSidebar = ({ activeTab, setActiveTab }) => {
   const mainTabs = [
     { name: "Overview", value: "overview", icon: <MdOutlineDashboard /> },
     { name: "Orders", value: "orders", icon: <MdOutlineFastfood /> },
+    { name: "Menu", value: "menu", icon: <MdMenuBook /> },
   ];
 
   const settingsTab = { name: "Settings", value: "settings", icon: <BsPersonGear /> };
