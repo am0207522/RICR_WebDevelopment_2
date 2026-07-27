@@ -1,47 +1,41 @@
 import React from "react";
-import { MdOutlineDashboard, MdOutlineFastfood } from "react-icons/md";
-import { PiListHeartLight } from "react-icons/pi";
-import { BsPersonGear } from "react-icons/bs";
+import { MdDashboard } from "react-icons/md";
+import { FaShoppingCart } from "react-icons/fa";
 import { MdMenuBook } from "react-icons/md";
+import { IoMdSettings } from "react-icons/io";
 
 const RestaurantSidebar = ({ activeTab, setActiveTab }) => {
   const mainTabs = [
-    { name: "Overview", value: "overview", icon: <MdOutlineDashboard /> },
-    { name: "Orders", value: "orders", icon: <MdOutlineFastfood /> },
+    { name: "Overview", value: "overview", icon: <MdDashboard /> },
+    { name: "Orders", value: "orders", icon: <FaShoppingCart /> },
     { name: "Menu", value: "menu", icon: <MdMenuBook /> },
   ];
 
-  const settingsTab = { name: "Settings", value: "settings", icon: <BsPersonGear /> };
+  const settingsTab = { name: "Settings", value: "settings", icon: <IoMdSettings /> };
 
-  const renderButton = (item) => (
-    <button
-      key={item.value}
-      className={`flex gap-3 font-semibold items-center border border-transparent hover:border-[#c2410c] transition w-full p-3 rounded-lg ${
-        activeTab === item.value
-          ? "bg-[#c2410c] text-white"
-          : "text-[#2d1b10] hover:bg-[#fff8f1]"
+  const renderTab = (tab) => (
+    <li
+      key={tab.value}
+      className={`cursor-pointer p-2 rounded text-(--color-neutral) flex items-center gap-3 ${
+        activeTab === tab.value
+          ? "bg-(--color-primary) text-(--color-primary-content) font-semibold"
+          : "hover:bg-(--color-secondary) hover:text-(--color-secondary-content) transition-colors duration-200"
       }`}
-      onClick={() => setActiveTab(item.value)}
+      onClick={() => setActiveTab(tab.value)}
     >
-      {item.icon}
-      <span>{item.name}</span>
-    </button>
+      {tab.icon} {tab.name}
+    </li>
   );
 
   return (
     <>
-      <div className="p-3 bg-white rounded-2xl shadow-lg pb-0.5rem !important flex flex-col h-full">
-        <div className="border-b-2 border-[#e7d9c9] text-center text-xl font-bold text-[#2d1b10] pb-3 pt-3">
-          Admin Dashboard
-        </div>
-
-        <div className="space-y-1 p-4 mt-2">
-          {mainTabs.map((item) => renderButton(item))}
-        </div>
-
-        <div className="space-y-1 px-4 pb-4 mt-auto border-t border-[#e7d9c9] pt-3">
-          {renderButton(settingsTab)}
-        </div>
+      <div className="h-full flex flex-col">
+        <ul className="space-y-4 flex-1">
+          {mainTabs.map((tab) => renderTab(tab))}
+        </ul>
+        <ul className="space-y-4 border-t border-(--color-secondary) py-2">
+          {renderTab(settingsTab)}
+        </ul>
       </div>
     </>
   );
