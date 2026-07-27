@@ -5,12 +5,13 @@ import RestaurantSidebar from "../../components/restaurantDashboard/RestaurantSi
 import RestaurantOverview from "../../components/restaurantDashboard/RestaurantOverview";
 import RestaurantSetting from "../../components/restaurantDashboard/RestaurantSetting";
 import RestaurantOrders from "../../components/restaurantDashboard/RestaurantOrders";
+import RestaurantMenu from "../../components/restaurantDashboard/RestaurantMenu";
 
 const RestaurantDashboard = () => {
   const { isLogin, role } = useAuth();
   const navigate = useNavigate();
   const active = useLocation().state?.activeTab;
-  const [activeTab, setActiveTab] = React.useState(active || "overview");
+  const [activeTab, setActiveTab] = React.useState(active || "menu");
 
   if (!isLogin || role !== "restaurant") {
     return (
@@ -35,12 +36,16 @@ const RestaurantDashboard = () => {
     <>
       <div className="flex h-[92vh]">
         <div className="w-1/6 border border-red-500 h-full">
-          <RestaurantSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+          <RestaurantSidebar
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+          />
         </div>
         <div className="w-5/6 border border-green-500 h-full P-3">
           {activeTab === "overview" && <RestaurantOverview />}
           {activeTab === "orders" && <RestaurantOrders />}
           {activeTab === "settings" && <RestaurantSetting />}
+          {activeTab === "menu" && <RestaurantMenu />}
         </div>
       </div>
     </>
