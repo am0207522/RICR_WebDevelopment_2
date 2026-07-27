@@ -5,6 +5,7 @@ import {
   uploadSingleImage,
   deleteSingleImage,
 } from "../utils/image.service.js";
+import Menu from "../models/menu.model.js";
 
 export const RestaurantGetData = async (req, res, next) => {
   try {
@@ -34,8 +35,8 @@ export const RestaurantGetData = async (req, res, next) => {
       });
     }
   } catch (error) {
-    console.log(error.message);
-    next();
+    console.log("RestaurantAddMenuItem error:", error);
+    next(error);
   }
 };
 
@@ -237,7 +238,6 @@ export const RestaurantUpdateLegalInfo = async (req, res, next) => {
     const currentUser = req.user;
     const { legalName, companyType } = req.body;
 
-
     if (!legalName || !companyType) {
       const error = new Error("All fields are required");
       error.statusCode = 400;
@@ -268,5 +268,358 @@ export const RestaurantUpdateLegalInfo = async (req, res, next) => {
   } catch (error) {
     console.log(error.message);
     next();
+  }
+};
+
+export const RestaurantAddMenuItem = async (req, res, next) => {
+  try {
+    const currentUser = req.user;
+    const {
+      itemName,
+      description,
+      price,
+      category,
+      foodType,
+      status,
+      isTopRated,
+      isRecommended,
+      isNew,
+      isDeleted,
+    } = req.body;
+    const itemImageFromFE = req.file;
+
+    console.log("Received data:", {
+      itemName,
+      description,
+      price,
+      category,
+      foodType,
+      status,
+      isTopRated,
+      isRecommended,
+      isNew,
+      isDeleted,
+      itemImageFromFE,
+    });
+
+    if (
+      !itemName ||
+      !description ||
+      !price ||
+      !category ||
+      !foodType ||
+      !status
+    ) {
+      const error = new Error("All fields are required");
+      error.statusCode = 400;
+      return next(error);
+    }
+
+    if (!itemImageFromFE) {
+      const error = new Error("Item image is required");
+      error.statusCode = 400;
+      return next(error);
+    }
+
+    const existingRestaurant = await Restaurant.findOne({
+      managerId: currentUser._id,
+    });
+    if (!existingRestaurant) {
+      const error = new Error("Restaurant Not Found");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    console.log("Lets UploadImage");
+
+    const itemImage = await uploadSingleImage(
+      itemImageFromFE,
+      `restaurant/${currentUser.phone}/menuItems`,
+    );
+
+    console.log("itemImage after upload:", itemImage);
+
+    const existingMenuItem = await Menu.findOne({
+      restaurantId: existingRestaurant._id,
+    });
+
+    console.log("Lets Add the Menu");
+
+    if (existingMenuItem) {
+      existingMenuItem.menuItems.push({
+        itemName,
+        description,
+        price,
+        category,
+        foodType,
+        status,
+        isTopRated,
+        isRecommended,
+        isNew,
+        isDeleted,
+        image: itemImage,
+      });
+
+      console.log("Existing Menu Item after push");
+      await existingMenuItem.save();
+      return res.status(200).json({
+        message: "Menu item added successfully",
+        data: existingMenuItem,
+      });
+    } else {
+      const newItem = {
+        itemName,
+        description,
+        price,
+        category,
+        foodType,
+        status,
+        isTopRated,
+        isRecommended,
+        isNew,
+        isDeleted,
+        image: itemImage,
+      };
+
+      console.log("New Item to be added");
+      const newMenuItem = await Menu.create({
+        restaurantId: existingRestaurant._id,
+        menuItems: [newItem],
+      });
+
+      return res.status(201).json({
+        message: "Menu item added successfully",
+        data: newMenuItem,
+      });
+    }
+  } catch (error) {
+    console.log(error.message);
+    next();
+  }
+};
+
+export const RestaurantMenuItems = async (req, res, next) => {
+  try {
+    const currentUser = req.user;
+
+    const existingRestaurant = await Restaurant.findOne({
+      managerId: currentUser._id,
+    });
+    if (!existingRestaurant) {
+      const error = new Error("Restaurant Not Found");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    const existingMenuItem = await Menu.findOne({
+      restaurantId: existingRestaurant._id,
+    });
+
+    if (!existingMenuItem) {
+      const error = new Error("Menu Items Not Found");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    // console.log("Existing Menu Items:", existingMenuItem.menuItems);
+
+    const activeMenuItems = existingMenuItem.menuItems.filter(
+      (item) => !item.isDeleted,
+    );
+
+    return res.status(200).json({
+      message: "Menu items fetched successfully",
+      data: activeMenuItems,
+    });
+  } catch (error) {
+    console.log(error.message);
+    next();
+  }
+};
+
+const parseBoolean = (value) => {
+  if (value === true || value === "true") return true;
+  if (value === false || value === "false") return false;
+  return undefined;
+};
+
+const getMenuContext = async (currentUser, itemId, next) => {
+  const existingRestaurant = await Restaurant.findOne({
+    managerId: currentUser._id,
+  });
+
+  if (!existingRestaurant) {
+    const error = new Error("Restaurant Not Found");
+    error.statusCode = 404;
+    return next(error);
+  }
+
+  const existingMenu = await Menu.findOne({
+    restaurantId: existingRestaurant._id,
+  });
+
+  if (!existingMenu) {
+    const error = new Error("Menu Items Not Found");
+    error.statusCode = 404;
+    return next(error);
+  }
+
+  const menuItem = existingMenu.menuItems.id(itemId);
+
+  // console.log("Menu Item Found:", menuItem);
+
+  if (!menuItem) {
+    const error = new Error("Menu Item Not Found");
+    error.statusCode = 404;
+    return next(error);
+  }
+
+  return { existingMenu, menuItem, existingRestaurant };
+};
+
+export const RestaurantUpdateMenuItem = async (req, res, next) => {
+  try {
+    const currentUser = req.user;
+    const { itemId } = req.params;
+    const context = await getMenuContext(currentUser, itemId, next);
+
+    if (!context) return;
+
+    const { existingMenu, menuItem } = context;
+    const { itemName, description, price, category, foodType, status } =
+      req.body;
+    const itemImageFromFE = req.file;
+
+    if (itemName !== undefined) menuItem.itemName = itemName;
+    if (description !== undefined) menuItem.description = description;
+    if (price !== undefined && price !== "") menuItem.price = Number(price);
+    if (category !== undefined) menuItem.category = category;
+    if (foodType !== undefined) menuItem.foodType = foodType;
+    if (status !== undefined) menuItem.status = status;
+
+    const isTopRated = parseBoolean(req.body.isTopRated);
+    const isRecommended = parseBoolean(req.body.isRecommended);
+    const isNew = parseBoolean(req.body.isNew);
+
+    if (isTopRated !== undefined) menuItem.isTopRated = isTopRated;
+    if (isRecommended !== undefined) menuItem.isRecommended = isRecommended;
+    if (isNew !== undefined) menuItem.isNew = isNew;
+
+    if (itemImageFromFE) {
+      await deleteSingleImage(menuItem.image);
+      const updatedImage = await uploadSingleImage(
+        itemImageFromFE,
+        `restaurant/${currentUser.phone}/menuItems`,
+      );
+      menuItem.image = updatedImage;
+    }
+
+    existingMenu.markModified("menuItems");
+    await existingMenu.save();
+    // console.log("Menu Item Updated:", menuItem);
+
+    return res.status(200).json({
+      message: "Menu item updated successfully",
+      data: menuItem,
+    });
+  } catch (error) {
+    console.log(error.message);
+    next(error);
+  }
+};
+
+export const RestaurantUpdateMenuItemStatus = async (req, res, next) => {
+  try {
+    const currentUser = req.user;
+    const { itemId } = req.params;
+    const status = req.query.status || req.body?.status;
+
+    if (!status) {
+      const error = new Error("Status is required");
+      error.statusCode = 400;
+      return next(error);
+    }
+
+    const allowedStatus = ["available", "unavailable", "discontinued"];
+    if (!allowedStatus.includes(status)) {
+      const error = new Error("Invalid status value");
+      error.statusCode = 400;
+      return next(error);
+    }
+
+    const context = await getMenuContext(currentUser, itemId, next);
+    if (!context) return;
+
+    const { existingMenu, menuItem } = context;
+    menuItem.status = status;
+
+    existingMenu.markModified("menuItems");
+    await existingMenu.save();
+
+    return res.status(200).json({
+      message: "Menu item status updated successfully",
+      data: menuItem,
+    });
+  } catch (error) {
+    console.log(error.message);
+    next(error);
+  }
+};
+
+export const RestaurantToggleMenuItemControl = async (req, res, next) => {
+  try {
+    const currentUser = req.user;
+    const { itemId } = req.params;
+    const control = req.query.control || req.body?.control;
+
+    const allowedControls = ["isTopRated", "isRecommended", "isNew"];
+
+    if (!allowedControls.includes(control)) {
+      const error = new Error("Invalid control value");
+      error.statusCode = 400;
+      return next(error);
+    }
+
+    const context = await getMenuContext(currentUser, itemId, next);
+    if (!context) return;
+
+    const { existingMenu, menuItem } = context;
+    menuItem[control] = !menuItem[control];
+
+    existingMenu.markModified("menuItems");
+    await existingMenu.save();
+
+    return res.status(200).json({
+      message: "Menu item control updated successfully",
+      data: menuItem,
+    });
+  } catch (error) {
+    console.log(error.message);
+    next(error);
+  }
+};
+
+export const RestaurantDeleteMenuItem = async (req, res, next) => {
+  try {
+    const currentUser = req.user;
+    const { itemId } = req.params;
+
+    const context = await getMenuContext(currentUser, itemId, next);
+    if (!context) return;
+
+    const { existingMenu, menuItem } = context;
+    menuItem.isDeleted = true;
+    menuItem.status = "discontinued";
+
+    existingMenu.markModified("menuItems");
+    await existingMenu.save();
+
+    return res.status(200).json({
+      message: "Menu item deleted successfully",
+      data: menuItem,
+    });
+  } catch (error) {
+    console.log(error.message);
+    next(error);
   }
 };
