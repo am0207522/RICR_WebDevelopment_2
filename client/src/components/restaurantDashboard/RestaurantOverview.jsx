@@ -1,9 +1,9 @@
 import React from "react";
 
-const Overview = () => {
+const RestaurantOverview = () => {
   return (
     <div className="overflow-y-auto h-full">
-      <h2 className="text-2xl font-bold mb-6">Overview</h2>
+      <h2 className="text-2xl font-bold mb-6">Restaurant Overview</h2>
       <div className="grid grid-cols-2 gap-4 mb-6">
         <div className="bg-(--color-base-200) p-4 rounded-lg">
           <p className="text-(--color-neutral) text-sm">Total Orders</p>
@@ -11,7 +11,7 @@ const Overview = () => {
         </div>
         <div className="bg-(--color-base-200) p-4 rounded-lg">
           <p className="text-(--color-neutral) text-sm">Total Spent</p>
-          <p className="text-3xl font-bold">$221</p>
+          <p className="text-3xl font-bold">$245</p>
         </div>
       </div>
       <div className="bg-(--color-base-200) p-4 rounded-lg">
@@ -22,4 +22,4 @@ const Overview = () => {
   );
 };
 
-export default Overview;
+export default RestaurantOverview;
