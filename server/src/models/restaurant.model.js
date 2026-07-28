@@ -30,7 +30,6 @@ const RestaurantSchema = mongoose.Schema(
         companyType: { type: String, required: true },
       },
     },
-
     documents: {
       type: {
         gstCertificate: { type: String, required: true },
@@ -103,3 +102,5 @@ const RestaurantSchema = mongoose.Schema(
 const Restaurant = mongoose.model("restaurant", RestaurantSchema);
 
 export default Restaurant;
+
+// tdy
