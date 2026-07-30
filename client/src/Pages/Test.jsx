@@ -38,7 +38,7 @@ const sample = {
 
 const Test = () => {
 
-
+// test page
     
   if ("geolocation" in navigator) {
     console.log("Location Avaliable");
