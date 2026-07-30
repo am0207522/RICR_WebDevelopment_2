@@ -70,7 +70,7 @@ const Home = () => {
             <img
               src={slide.image}
               alt={slide.alt}
-              className="w-full h-full object-cover brightness-[60%]"
+              className="w-full h-full object-cover brightness-60"
             />
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4 pb-12">
               <h1 className="font-bold text-[clamp(1.5rem,3vw,3.5rem)]">
@@ -144,7 +144,7 @@ const Home = () => {
       </div>
 
       {/* Featured Restaurants Section */}
-      <section className="py-4 bg-gradient-to-b from-[#c2410c] to-white">
+      <section className="py-4 bg-linear-to-b from-[#c2410c] to-white">
         <div className="container mx-auto px-3">
           <div className="text-center md:text-left mx-5 p-4">
             <h2 className="text-2xl md:text-3xl font-bold text-(--color-primary-content) mb-2">Featured Restaurants</h2>
