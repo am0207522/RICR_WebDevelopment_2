@@ -9,7 +9,7 @@ const Register = () => {
 
   // SIR KA LOGIC: "userType" field add ki state mein (tumhare code mein missing thi — isi wajah se 400 error aa raha tha, backend ko userType chahiye hota hai)
   const [registerData, setRegisterData] = useState({
-    userType: "customer", // SIR KA LOGIC: default "customer" rakha
+    userType: "customer", // default "customer" rakha
     fullName: "",
     gender: "",
     dob: "",
