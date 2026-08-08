@@ -1,25 +1,22 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { MdOutlineAddAPhoto } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
-import { LuLoaderCircle } from "react-icons/lu";
-import { useAuth } from "../../../context/AuthContext";
 import api from "../../../config/api.config";
 import toast from "react-hot-toast";
+import { RiLoader4Fill } from "react-icons/ri";
 
 const RestaurantPhotos = () => {
-  const { user } = useAuth();
-
   const MAX_FILE_SIZE = 1024 * 1024; // 1MB
   const MAX_GALLERY_IMAGES = 8;
 
+  const [restaurantData, setRestaurantData] = useState(
+    JSON.parse(sessionStorage.getItem("cravingRestaurant")) || {},
+  );
   const [coverImage, setCoverImage] = useState(null);
   const [galleryImages, setGalleryImages] = useState([]);
   const [errors, setErrors] = useState({ cover: "", gallery: "" });
-
-  const [existingCoverUrl, setExistingCoverUrl] = useState(null);
-  const [existingGalleryImages, setExistingGalleryImages] = useState([]);
-  const [isLoadingExisting, setIsLoadingExisting] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
+  const [isSavingCover, setIsSavingCover] = useState(false);
+  const [isSavingGallery, setIsSavingGallery] = useState(false);
 
   const coverPreview = useMemo(() => {
     return coverImage ? URL.createObjectURL(coverImage) : "";
@@ -48,35 +45,6 @@ const RestaurantPhotos = () => {
       });
     };
   }, [galleryPreviews]);
-
-
-  const fetchExistingPhotos = async () => {
-    try {
-      setIsLoadingExisting(true);
-
-      const res = await api.get(`/restaurant/get-resturant-data?id=${user._id}`);
-
-
-      const fetched = res.data.data;
-      const restaurant = Array.isArray(fetched) ? fetched[0] : fetched;
-
-      setExistingCoverUrl(restaurant?.coverImage?.url || null);
-      setExistingGalleryImages(restaurant?.restaurantImage || []);
-    } catch (error) {
-      toast.error(
-        error.response?.data?.message ||
-          "Unknown error occurred fetching existing photos.",
-      );
-    } finally {
-      setIsLoadingExisting(false);
-    }
-  };
-
-  useEffect(() => {
-    if (user?._id) {
-      fetchExistingPhotos();
-    }
-  }, [user]);
 
   const handleCoverImageChange = (event) => {
     const file = event.target.files?.[0];
@@ -142,39 +110,55 @@ const RestaurantPhotos = () => {
     setErrors((prev) => ({ ...prev, gallery: "" }));
   };
 
-  const handleSavePhotos = async () => {
-    if (!coverImage && galleryImages.length === 0) {
-      toast.error("Please select at least one photo to upload.");
+  const handleSaveCoverPhoto = async () => {
+    if (!coverImage) {
+      toast.error("Please select a cover image to upload.");
       return;
     }
-
     try {
-      setIsSaving(true);
-
-      const payload = new FormData();
-      if (coverImage) {
-        payload.append("coverImage", coverImage);
-      }
-      galleryImages.forEach((file) => {
-        payload.append("restaurantImage", file);
+      setIsSavingCover(true);
+      const formData = new FormData();
+      formData.append("coverImage", coverImage);
+      const res = await api.put("/restaurant/update-cover-photo", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
-
-      const res = await api.post(`/restaurant/update-profile`, payload);
-
-      const updated = res.data.data;
-      setExistingCoverUrl(updated?.coverImage?.url || existingCoverUrl);
-      setExistingGalleryImages(updated?.restaurantImage || existingGalleryImages);
-
+      setRestaurantData(res.data.data);
+      sessionStorage.setItem("cravingRestaurant", JSON.stringify(res.data.data));
+      toast.success(res.data.message);
       setCoverImage(null);
-      setGalleryImages([]);
-
-      toast.success(res.data.message || "Photos updated successfully!");
     } catch (error) {
       toast.error(
-        error.response?.data?.message || "Failed to update restaurant photos",
+        error.response?.data?.message || "Failed to update cover photo. Please try again.",
       );
     } finally {
-      setIsSaving(false);
+      setIsSavingCover(false);
+    }
+  };
+
+  const handleSaveRestaurantImages = async () => {
+    if (galleryImages.length === 0) {
+      toast.error("Please select at least one restaurant image to upload.");
+      return;
+    }
+    try {
+      setIsSavingGallery(true);
+      const formData = new FormData();
+      galleryImages.forEach((img) => {
+        formData.append("restaurantImages", img);
+      });
+      const res = await api.put("/restaurant/update-restaurant-images", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      setRestaurantData(res.data.data);
+      sessionStorage.setItem("cravingRestaurant", JSON.stringify(res.data.data));
+      toast.success(res.data.message);
+      setGalleryImages([]);
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "Failed to update restaurant images. Please try again.",
+      );
+    } finally {
+      setIsSavingGallery(false);
     }
   };
 
@@ -191,9 +175,16 @@ const RestaurantPhotos = () => {
                 Upload one hero image under 1MB.
               </p>
             </div>
-            <div className="text-[11px] px-2 py-1 rounded-full bg-(--color-primary)/10 text-(--color-primary) font-medium">
-              1 file
-            </div>
+            <button
+              onClick={handleSaveCoverPhoto}
+              disabled={!coverImage || isSavingCover}
+              className="flex items-center gap-1.5 bg-(--color-primary) text-(--color-primary-content) px-3 py-1.5 rounded-md text-xs shadow-sm hover:opacity-95 transition disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              {isSavingCover ? (
+                <RiLoader4Fill className="animate-spin" />
+              ) : null}
+              {isSavingCover ? "Saving..." : "Save Cover Photo"}
+            </button>
           </div>
 
           <div className="space-y-3">
@@ -231,6 +222,9 @@ const RestaurantPhotos = () => {
                     className="w-full h-56 object-cover"
                   />
                   <div className="absolute inset-0 bg-linear-to-t from-black/35 via-transparent to-transparent" />
+                  <span className="absolute top-2 left-2 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-yellow-400 text-yellow-900">
+                    New — Not Saved
+                  </span>
                 </div>
                 <div className="flex items-center justify-between gap-2 px-3 py-2 text-xs">
                   <p className="truncate font-medium">{coverImage.name}</p>
@@ -239,19 +233,22 @@ const RestaurantPhotos = () => {
                   </span>
                 </div>
               </div>
-            ) : existingCoverUrl ? (
+            ) : restaurantData?.coverImage?.url ? (
               <div className="overflow-hidden rounded-xl border border-(--color-secondary) bg-white shadow-sm">
                 <div className="relative">
                   <img
-                    src={existingCoverUrl}
+                    src={restaurantData.coverImage.url}
                     alt="Current Cover"
                     className="w-full h-56 object-cover"
                   />
                   <div className="absolute inset-0 bg-linear-to-t from-black/35 via-transparent to-transparent" />
+                  <span className="absolute top-2 left-2 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-green-400 text-green-900">
+                    Current
+                  </span>
                 </div>
-                <div className="flex items-center justify-between gap-2 px-3 py-2 text-xs">
-                  <p className="truncate font-medium">Current cover image</p>
-                </div>
+                <p className="px-3 py-2 text-xs text-(--color-secondary-content)">
+                  Upload a new image above to replace this cover.
+                </p>
               </div>
             ) : (
               <div className="rounded-xl border border-dashed border-(--color-secondary) bg-linear-to-br from-white to-(--color-base-100) px-4 py-8 text-center">
@@ -285,7 +282,7 @@ const RestaurantPhotos = () => {
               </p>
             </div>
 
-            <div className="shrink-0">
+            <div className="shrink-0 flex items-center gap-2">
               <label
                 htmlFor="galleryImages"
                 className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-md text-xs shadow-sm transition ${galleryImages.length >= MAX_GALLERY_IMAGES ? "bg-(--color-secondary) text-(--color-secondary-content) cursor-not-allowed" : "bg-(--color-primary) text-(--color-primary-content) cursor-pointer hover:opacity-95"}`}
@@ -302,6 +299,16 @@ const RestaurantPhotos = () => {
                 disabled={galleryImages.length >= MAX_GALLERY_IMAGES}
                 className="hidden"
               />
+              <button
+                onClick={handleSaveRestaurantImages}
+                disabled={galleryImages.length === 0 || isSavingGallery}
+                className="inline-flex items-center gap-1.5 bg-(--color-primary) text-(--color-primary-content) px-3 py-1.5 rounded-md text-xs shadow-sm hover:opacity-95 transition disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                {isSavingGallery ? (
+                  <RiLoader4Fill className="animate-spin" />
+                ) : null}
+                {isSavingGallery ? "Saving..." : "Save Images"}
+              </button>
             </div>
           </div>
 
@@ -311,29 +318,13 @@ const RestaurantPhotos = () => {
             </div>
           )}
 
-          {galleryPreviews.length > 0 || existingGalleryImages.length > 0 ? (
+          {galleryPreviews.length > 0 ? (
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-              {existingGalleryImages.map((image, index) => (
-                <div
-                  key={image.publicId || `existing-${index}`}
-                  className="group overflow-hidden rounded-xl border border-(--color-secondary) bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-                >
-                  <div className="relative">
-                    <img
-                      src={image.url}
-                      alt={`Restaurant ${index + 1}`}
-                      className="h-36 w-full object-cover"
-                    />
-                  </div>
-
-                  <div className="px-3 py-2">
-                    <p className="truncate text-xs font-medium text-(--color-primary)">
-                      Saved photo
-                    </p>
-                  </div>
-                </div>
-              ))}
-
+              <div className="col-span-full mb-1">
+                <p className="text-[11px] text-yellow-600 font-medium">
+                  New images — not saved yet. Click "Save Images" to upload.
+                </p>
+              </div>
               {galleryPreviews.map((imagePreview, index) => (
                 <div
                   key={imagePreview.key}
@@ -366,6 +357,31 @@ const RestaurantPhotos = () => {
                 </div>
               ))}
             </div>
+          ) : restaurantData?.restaurantImage?.length > 0 ? (
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              <div className="col-span-full mb-1">
+                <p className="text-[11px] text-green-600 font-medium">
+                  Currently saved images. Upload new ones to replace all.
+                </p>
+              </div>
+              {restaurantData.restaurantImage.map((img, index) => (
+                <div
+                  key={img.publicId || index}
+                  className="overflow-hidden rounded-xl border border-(--color-secondary) bg-white shadow-sm"
+                >
+                  <img
+                    src={img.url}
+                    alt={`Restaurant ${index + 1}`}
+                    className="h-36 w-full object-cover"
+                  />
+                  <div className="px-3 py-2">
+                    <p className="text-[11px] text-(--color-secondary-content)">
+                      Image {index + 1}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           ) : (
             <div className="rounded-xl border border-dashed border-(--color-secondary) bg-linear-to-br from-white to-(--color-base-100) px-4 py-10 text-center">
               <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-(--color-primary)/10 text-(--color-primary)">
@@ -381,23 +397,6 @@ const RestaurantPhotos = () => {
             </div>
           )}
         </div>
-      </div>
-
-      <div className="flex justify-end mt-3">
-        <button
-          type="button"
-          onClick={handleSavePhotos}
-          disabled={isSaving || isLoadingExisting}
-          className="flex items-center gap-2 bg-(--color-primary) text-(--color-primary-content) px-4 py-2 rounded-md text-sm shadow-sm hover:opacity-95 transition disabled:opacity-60 disabled:cursor-not-allowed"
-        >
-          {isSaving ? (
-            <>
-              <LuLoaderCircle className="animate-spin" /> Saving...
-            </>
-          ) : (
-            "Save Photos"
-          )}
-        </button>
       </div>
     </div>
   );
