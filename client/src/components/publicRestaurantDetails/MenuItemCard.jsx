@@ -6,6 +6,7 @@ import {
   IoIosRemoveCircleOutline,
 } from "react-icons/io";
 
+//
 import { foodTypeDot } from "./helpers";
 import { useCart } from "../../context/CartContext";
 
