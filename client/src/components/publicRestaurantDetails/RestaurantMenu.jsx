@@ -108,7 +108,7 @@ const RestaurantMenu = ({ menuItems, restaurantId, restaurantName }) => {
         </div>
       </div>
 
-      {/* Items */}
+      {/* Items para */}
       <div className="p-4">
         {filteredItems.length === 0 ? (
           <div className="py-16 text-center text-(--color-secondary)">
