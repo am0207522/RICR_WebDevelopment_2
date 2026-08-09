@@ -26,7 +26,7 @@ const RestaurantHero = ({ restaurant, onBack }) => {
         <IoArrowBack /> Back
       </button>
 
-      {/* Hero content */}
+      {/* Hero content para */}
       <div className="absolute bottom-0 left-0 right-0 px-5 md:px-10 pb-5 text-white">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
