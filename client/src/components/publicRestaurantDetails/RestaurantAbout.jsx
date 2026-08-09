@@ -1,5 +1,6 @@
 import React from "react";
 
+// About para
 const RestaurantAbout = ({ description }) => (
   <div className="bg-(--color-base-100) rounded-2xl p-4 shadow-sm">
     <h2 className="text-sm font-bold text-(--color-primary) mb-2 uppercase tracking-wide">
