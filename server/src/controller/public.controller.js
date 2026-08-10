@@ -1,4 +1,47 @@
 import Contact from "../models/contact.model.js";
+import Restaurant from "../models/restaurant.model.js";
+import Menu from "../models/menu.model.js";
+
+export const GetAllRestaurants = async (req, res, next) => {
+  try {
+    const restaurants = await Restaurant.find({ status: "active" });
+
+    res.status(200).json({
+      message: "Restaurants fetched successfully",
+      data: restaurants,
+    });
+  } catch (error) {
+    console.log(error.message);
+    next(error);
+  }
+};
+
+export const GetRestaurantDetail = async (req, res, next) => {
+  try {
+    const { restaurantId } = req.params;
+
+    const restaurant = await Restaurant.findById(restaurantId);
+    if (!restaurant) {
+      const error = new Error("Restaurant not found");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    const menuDoc = await Menu.findOne({ restaurantId });
+    const menuItems = menuDoc ? menuDoc.menuItems : [];
+
+    res.status(200).json({
+      message: "Restaurant details fetched successfully",
+      data: {
+        restaurantId: restaurant,
+        menuItems,
+      },
+    });
+  } catch (error) {
+    console.log(error.message);
+    next(error);
+  }
+};
 
 export const ContactUsForm = async (req, res, next) => {
   try {
