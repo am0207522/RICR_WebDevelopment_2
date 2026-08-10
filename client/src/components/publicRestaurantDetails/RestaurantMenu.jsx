@@ -68,7 +68,11 @@ const RestaurantMenu = ({ menuItems, restaurantId, restaurantName }) => {
 
         {/* Food Type Filter */}
         {foodTypes.length > 1 && (
-          <div className="flex flex-wrap gap-1.5 mb-3">
+          <div className="mb-3">
+            <span className="block text-[11px] font-semibold uppercase tracking-wide text-(--color-secondary) mb-1">
+              Food Type
+            </span>
+            <div className="flex flex-wrap gap-1.5">
             {foodTypes.map((type) => (
               <button
                 key={type}
@@ -87,10 +91,14 @@ const RestaurantMenu = ({ menuItems, restaurantId, restaurantName }) => {
                 {type}
               </button>
             ))}
+            </div>
           </div>
         )}
 
         {/* Category Tabs */}
+        <span className="block text-[11px] font-semibold uppercase tracking-wide text-(--color-secondary) mb-1">
+          Category
+        </span>
         <div className="flex gap-1.5 overflow-x-auto pb-1">
           {categories.map((cat) => (
             <button
