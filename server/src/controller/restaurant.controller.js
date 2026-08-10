@@ -82,6 +82,7 @@ export const RestaurantUpdateInfo = async (req, res, next) => {
         description,
         restaurantType,
         cuisineTypes: cuisineTypesArray,
+        status: "active",
         contactDetails: {
           email: contactEmail,
           phone: contactPhone,
