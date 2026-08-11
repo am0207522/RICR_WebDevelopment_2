@@ -3,7 +3,6 @@ import React from "react";
 const RestaurantGallery = ({ images }) => {
   if (!images?.length) return null;
 
-  // Gallery para
   return (
     <div className="bg-(--color-base-100) rounded-2xl p-4 shadow-sm">
       <h2 className="text-sm font-bold text-(--color-primary) mb-3 uppercase tracking-wide">
