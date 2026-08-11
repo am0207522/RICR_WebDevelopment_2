@@ -11,33 +11,41 @@ const RestaurantSidebar = ({ activeTab, setActiveTab }) => {
     { name: "Menu", value: "menu", icon: <MdMenuBook /> },
   ];
 
-  const settingsTab = { name: "Settings", value: "settings", icon: <IoMdSettings /> };
+  const settingsTab = {
+    name: "Settings",
+    value: "settings",
+    icon: <IoMdSettings />,
+  };
 
-  const renderTab = (tab) => (
-    <li
-      key={tab.value}
-      className={`cursor-pointer p-2 rounded text-(--color-neutral) flex items-center gap-3 ${
-        activeTab === tab.value
-          ? "bg-(--color-primary) text-(--color-primary-content) font-semibold"
-          : "hover:bg-(--color-secondary) hover:text-(--color-secondary-content) transition-colors duration-200"
+  const renderButton = (item) => (
+    <button
+      key={item.value}
+      className={`flex gap-3 font-semibold items-center border border-transparent hover:border-(--color-primary) transition w-full p-3 rounded-lg ${
+        activeTab === item.value
+          ? "bg-(--color-primary) text-(--color-primary-content)"
+          : "text-(--color-base-content) hover:bg-(--color-base-200)"
       }`}
-      onClick={() => setActiveTab(tab.value)}
+      onClick={() => setActiveTab(item.value)}
     >
-      {tab.icon} {tab.name}
-    </li>
+      {item.icon}
+      <span>{item.name}</span>
+    </button>
   );
 
   return (
-    <>
-      <div className="h-full flex flex-col">
-        <ul className="space-y-4 flex-1">
-          {mainTabs.map((tab) => renderTab(tab))}
-        </ul>
-        <ul className="space-y-4 border-t border-(--color-secondary) py-2">
-          {renderTab(settingsTab)}
-        </ul>
+    <div className="p-3 bg-(--color-base-100) rounded-2xl shadow-lg flex flex-col h-full">
+      <div className="border-b-2 border-(--color-base-300) text-center text-xl font-bold text-(--color-base-content) pb-3 pt-3">
+        Restaurant Dashboard
       </div>
-    </>
+
+      <div className="space-y-1 p-4 mt-2">
+        {mainTabs.map((item) => renderButton(item))}
+      </div>
+
+      <div className="space-y-1 px-4 pb-4 mt-auto border-t border-(--color-base-300) pt-3">
+        {renderButton(settingsTab)}
+      </div>
+    </div>
   );
 };
 
