@@ -75,7 +75,7 @@ const RestaurantMenu = () => {
 
   return (
     <>
-      <div className="overflow-y-auto h-full">
+      <div className="flex flex-col h-full min-h-0 overflow-hidden">
         <div className="flex justify-between items-center px-1">
           <h2 className="text-2xl font-bold mb-6">Menu Management</h2>
           <div className="flex gap-4 items-center">
@@ -95,7 +95,7 @@ const RestaurantMenu = () => {
             />
           </div>
         </div>
-        <div className="bg-(--color-base-200) p-4 rounded-lg">
+        <div className="bg-(--color-base-200) p-4 rounded-lg flex-1 min-h-0 flex flex-col overflow-hidden">
           <div className="text-(--color-primary) grid grid-cols-7 gap-4 font-bold border-b border-(--color-secondary) py-2">
             <div className="col-span-2">Item Name & Description</div>
             <div className="text-center">Price</div>
@@ -104,7 +104,7 @@ const RestaurantMenu = () => {
             <div>Controls</div>
             <div>Actions</div>
           </div>
-          <div className="overflow-y-auto max-h-[65vh]">
+          <div className="overflow-y-auto flex-1">
             {menuItems.length === 0 ? (
               <div className="text-center py-10 text-(--color-primary)/70">
                 No menu items found.
