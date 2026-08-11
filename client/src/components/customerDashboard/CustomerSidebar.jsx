@@ -28,7 +28,7 @@ const CustomerSidebar = ({ activeTab, setActiveTab }) => {
 
   return (
     <>
-      <div className="p-3 bg-white rounded-2xl shadow-lg pb-0.5rem !important flex flex-col h-full">
+      <div className="p-3 bg-(--color-base-100) rounded-2xl shadow-lg flex flex-col h-full">
         <div className="border-b-2 border-[#e7d9c9] text-center text-xl font-bold text-[#2d1b10] pb-3 pt-3">
           User Dashboard
         </div>
