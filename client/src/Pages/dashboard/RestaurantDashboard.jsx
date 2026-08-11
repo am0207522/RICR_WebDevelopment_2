@@ -32,23 +32,21 @@ const RestaurantDashboard = () => {
     );
   }
 
-  return (
-    <>
-      <div className="flex h-[92vh]">
-        <div className="w-1/6 border border-red-500 h-full">
-          <RestaurantSidebar
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-          />
-        </div>
-        <div className="w-5/6 border border-green-500 h-full P-3">
-          {activeTab === "overview" && <RestaurantOverview />}
-          {activeTab === "orders" && <RestaurantOrders />}
-          {activeTab === "settings" && <RestaurantSetting />}
-          {activeTab === "menu" && <RestaurantMenu />}
-        </div>
+return (
+    <div className="h-[92vh] flex items-stretch gap-2 m-2">
+      <div className="w-3/17 bg-(--color-base-200) p-4 rounded-lg shadow-md h-full">
+        <RestaurantSidebar
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+        />
       </div>
-    </>
+      <div className="w-14/17 bg-(--color-base-100) p-4 rounded-lg shadow-md h-full">
+        {activeTab === "overview" && <RestaurantOverview />}
+        {activeTab === "orders" && <RestaurantOrders />}
+        {activeTab === "settings" && <RestaurantSetting />}
+        {activeTab === "menu" && <RestaurantMenu />}
+      </div>
+    </div>
   );
 };
 
