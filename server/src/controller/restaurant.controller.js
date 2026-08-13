@@ -105,7 +105,7 @@ export const RestaurantUpdateInfo = async (req, res, next) => {
       existingRestaurant.contactDetails.phone = contactPhone;
       existingRestaurant.servingHours.openingTime = openingTime;
       existingRestaurant.servingHours.closingTime = closingTime;
-      await existingRestaurant.save();
+      await existingRestaurant.save({ validateModifiedOnly: true });
       return res.status(200).json({
         message: "Restaurant profile updated successfully",
         data: existingRestaurant,
@@ -175,7 +175,7 @@ export const RestaurantUpdateLegalInfo = async (req, res, next) => {
       companyType,
     };
 
-    await existingRestaurant.save();
+    await existingRestaurant.save({ validateModifiedOnly: true });
 
     return res.status(200).json({
       message: "Legal information updated successfully",
@@ -567,7 +567,7 @@ export const RestaurantUpdateAddress = async (req, res, next) => {
       };
     }
 
-    await existingRestaurant.save();
+    await existingRestaurant.save({ validateModifiedOnly: true });
     return res.status(200).json({
       message: "Address updated successfully",
       data: existingRestaurant,
@@ -608,7 +608,7 @@ export const RestaurantUpdateBankingDocuments = async (req, res, next) => {
         fssai ?? existingRestaurant.documents?.fssaiCertificate ?? "",
     };
 
-    await existingRestaurant.save();
+    await existingRestaurant.save({ validateModifiedOnly: true });
     return res.status(200).json({
       message: "Banking & Documents updated successfully",
       data: existingRestaurant,
@@ -641,7 +641,7 @@ export const RestaurantUpdateSocialMediaLinks = async (req, res, next) => {
     }
 
     existingRestaurant.socialMediaLinks = socialMediaLinks;
-    await existingRestaurant.save();
+    await existingRestaurant.save({ validateModifiedOnly: true });
     return res.status(200).json({
       message: "Social media links updated successfully",
       data: existingRestaurant,
@@ -683,7 +683,7 @@ export const RestaurantUpdateCoverPhoto = async (req, res, next) => {
     );
     existingRestaurant.coverImage = coverImage;
 
-    await existingRestaurant.save();
+    await existingRestaurant.save({ validateModifiedOnly: true });
     return res.status(200).json({
       message: "Cover photo updated successfully",
       data: existingRestaurant,
@@ -725,7 +725,7 @@ export const RestaurantUpdateRestaurantImages = async (req, res, next) => {
     );
     existingRestaurant.restaurantImage = restaurantImages;
 
-    await existingRestaurant.save();
+    await existingRestaurant.save({ validateModifiedOnly: true });
     return res.status(200).json({
       message: "Restaurant images updated successfully",
       data: existingRestaurant,
