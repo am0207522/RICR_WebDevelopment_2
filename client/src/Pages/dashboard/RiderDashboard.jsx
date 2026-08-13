@@ -30,18 +30,16 @@ const RiderDashboard = () => {
     );
   }
   return (
-    <>
-      <div className="flex h-[92vh]">
-        <div className="w-1/6 border border-red-500 h-full">
-          <Sidebar active={active} setActive={setActive} />
-        </div>
-        <div className="w-5/6 border border-green-500 h-full P-3">
-          {active === "Overview" && <RiderOverview />}
-          {active === "Orders" && <RiderOrders />}
-          {active === "Settings" && <RiderSetting />}
-        </div>
+    <div className="flex items-stretch min-h-[92vh]">
+      <div className="w-1/6 h-full">
+        <RiderSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
       </div>
-    </>
+      <div className="w-5/6 h-full p-3">
+        {activeTab === "overview" && <RiderOverview />}
+        {activeTab === "orders" && <RiderOrders />}
+        {activeTab === "settings" && <RiderSetting />}
+      </div>
+    </div>
   );
 };
 
